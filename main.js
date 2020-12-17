@@ -8,20 +8,29 @@ logger.add(new logger.transports.Console, {
     colorize: true
 });
 logger.level = 'debug';
-// Initialize Discord Bot
 var bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
+let changelogEmbed = new Discord.MessageEmbed()
+    .setColor('#6a2aff')
+    .setTitle(`Changelog`)
+    .setURL('https://github.com/Unbidden-Dev-Team/UnbiddenMod')
+    .setAuthor('Unbidden Dev Team', 'https://i.imgur.com/a/nX4113x.png', 'https://github.com/Unbidden-Dev-Team/UnbiddenMod')
+	.setDescription('Mod Changes')
+	.setThumbnail('https://i.imgur.com/a/nX4113x.png')
+	.addFields(
+        { name: 'Fire Ancient can now find players', value: 'Done' },
+        { name: 'Fire Ancient now has animation', value: 'Done' },
+        { name: 'Made Players susceptible to elements', value: 'Done' },
+	)
+	.setImage('https://i.imgur.com/a/nX4113x.png')
+	.setTimestamp()
+	.setFooter('UnbiddenMod Dev Team', '');
 bot.username = 'UnbiddenBot';
-bot.id =
     bot.on('ready', function (evt) {
         logger.info('Connected');
         logger.info(`Logged in as: ${bot.user.tag}!`);
-        logger.info(bot.username + ' - (' + bot.id + ')');
     });
 bot.on('message', function (message) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-
     const user = message.author,
           userID = user.id,
           channelID = message.channel.id,
@@ -44,10 +53,15 @@ bot.on('message', function (message) {
             case 'ihaveabug':
                 message.reply(`Post an issue here! Remember to be descriptive!\nhttps://github.com/Unbidden-Dev-Team/UnbiddenMod/issues`);
                 break;
+            case 'changelog':
+                message.channel.send(changelogEmbed);
+                break;
+            case 'uMod add changelog':
+                changelogEmbed.addFields
+                break;
             default:
                 message.channel.send("Sorry, I'm not sure what you mean by that. Please use \"!help\" to see the full list of commands.");
                 break;
-            // Just add any case commands if you want to..
         }
     }
 });

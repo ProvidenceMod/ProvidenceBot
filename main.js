@@ -26,15 +26,20 @@ bot.on('message', function (message) {
           userID = user.id,
           channelID = message.channel.id,
           content = message.content;
-    console.log(user, userID, channelID, content);
     if (content.substring(0, 1) == '!') {
         var args = content.substring(1).split(' ');
         var cmd = args[0];
         args = args.splice(1);
         switch (cmd) {
             // !ping
-            case 'ping':
-                message.reply('Pong!')
+            case 'help':
+                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\`\`\`");
+                break;
+            case 'wiki':
+                message.channel.send("Sorry, this command isn't set up yet!");
+                break;
+            default:
+                message.channel.send("Sorry, I'm not sure what you mean by that. Please use \"!help\" to see the full list of commands.");
                 break;
             // Just add any case commands if you want to..
         }

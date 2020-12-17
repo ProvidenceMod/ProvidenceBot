@@ -1,0 +1,16 @@
+{
+    "name": "unbidden-bot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "author": "Unbidden Dev Team",
+    "dependencies": {
+        "discord.io": "^2.5.3",
+        "discord.js": "^12.5.1",
+        "dotenv": "^8.2.0",
+        "winston": "^3.3.3"
+    },
+    "scripts": {
+        "start": "node main.js"
+    }
+}

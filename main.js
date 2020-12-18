@@ -57,7 +57,11 @@ bot.on('message', function (message) {
                     message.channel.send(changelogEmbed);
                 } else if (args[0] === 'add') {
                     if (args[1] !== undefined && args[2] !== undefined) {
-                        changelogEmbed.addFields(fieldBuilder(args.splice(1).join(" "), "Done"));
+                        const field = fieldBuilder(args.splice(1).join(" "), "Done");
+                        logAtBootup.push(field);
+                        writeToLog(JSON.stringify({contents: logAtBootup}, null, 2));
+
+                        changelogEmbed.addFields(field);
                         message.channel.send("Done!");
                         message.channel.send(changelogEmbed);
                     } else {

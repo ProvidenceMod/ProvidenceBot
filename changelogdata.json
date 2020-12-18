@@ -11,6 +11,10 @@
     {
       "name": "Made Players susceptible to elements",
       "value": "Done"
+    },
+    {
+      "name": "added non-volatile changelog functionality",
+      "value": "Done"
     }
   ]
 }

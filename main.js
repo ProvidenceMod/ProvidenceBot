@@ -1,7 +1,9 @@
 require("dotenv").config();
+const { fieldBuilder, pluckFirstQuotedString, readChangelog, writeToLog } = require('./helpers');
 var Discord = require('discord.js');
 var logger = require('winston');
 var auth = require('./auth.json');
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -10,28 +12,7 @@ logger.add(new logger.transports.Console, {
 logger.level = 'debug';
 var bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
-const fieldBuilder = function(name, value) {
-    return { name, value };
-};
-const pluckFirstQuotedString = function(string) {
-    let pos1, pos2;
-    for (let i = 0; i < string.length; i++) {
-        if (pos1 !== undefined && pos2 !== undefined) {
-            return string.slice(pos1, pos2 + 1);
-        }
-        const c = string[i];
-        if (c === '"') {
-            if (pos1 !== undefined) {
-                pos1 = i;
-                continue;
-            } else if (pos2 !== undefined) {
-                pos2 = i;
-                continue;
-            }
-        }
-    }
-};
-
+const logAtBootup = readChangelog().contents;
 let changelogEmbed = new Discord.MessageEmbed()
     .setColor('#6a2aff')
     .setTitle(`Changelog`)
@@ -39,11 +20,7 @@ let changelogEmbed = new Discord.MessageEmbed()
     .setAuthor('Unbidden Dev Team', 'https://i.imgur.com/a/nX4113x.png', 'https://github.com/Unbidden-Dev-Team/UnbiddenMod')
 	.setDescription('Mod Changes')
 	.setThumbnail('https://i.imgur.com/a/nX4113x.png')
-	.addFields(
-        { name: 'Fire Ancient can now find players', value: 'Done' },
-        { name: 'Fire Ancient now has animation', value: 'Done' },
-        { name: 'Made Players susceptible to elements', value: 'Done' },
-	)
+	.addFields(...logAtBootup)
 	.setImage('https://i.imgur.com/a/nX4113x.png')
 	.setTimestamp()
 	.setFooter('UnbiddenMod Dev Team', '');
@@ -80,10 +57,14 @@ bot.on('message', function (message) {
                     message.channel.send(changelogEmbed);
                 } else if (args[0] === 'add') {
                     if (args[1] !== undefined && args[2] !== undefined) {
-                        changelogEmbed.addFields(fieldBuilder(args[1], args[2]))
+                        changelogEmbed.addFields(fieldBuilder(args.splice(1).join(" "), "Done"));
+                        message.channel.send("Done!");
+                        message.channel.send(changelogEmbed);
                     } else {
                         message.channel.send("You're missing some arguments to add to the changelog!");
                     }
+                } else {
+                    message.reply("I don't have that functionality for the changelog!");
                 }
                 break;
             default:

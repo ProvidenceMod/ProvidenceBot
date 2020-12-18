@@ -41,7 +41,7 @@ bot.on('message', function (message) {
         switch (cmd) {
             // !ping
             case 'help':
-                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\`\`\`");
+                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\`\`\`");
                 break;
             case 'wiki':
                 message.channel.send("Sorry, this command isn't set up yet!");

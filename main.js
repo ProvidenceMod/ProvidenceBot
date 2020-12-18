@@ -10,6 +10,28 @@ logger.add(new logger.transports.Console, {
 logger.level = 'debug';
 var bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
+const fieldBuilder = function(name, value) {
+    return { name, value };
+};
+const pluckFirstQuotedString = function(string) {
+    let pos1, pos2;
+    for (let i = 0; i < string.length; i++) {
+        if (pos1 !== undefined && pos2 !== undefined) {
+            return string.slice(pos1, pos2 + 1);
+        }
+        const c = string[i];
+        if (c === '"') {
+            if (pos1 !== undefined) {
+                pos1 = i;
+                continue;
+            } else if (pos2 !== undefined) {
+                pos2 = i;
+                continue;
+            }
+        }
+    }
+};
+
 let changelogEmbed = new Discord.MessageEmbed()
     .setColor('#6a2aff')
     .setTitle(`Changelog`)
@@ -54,10 +76,15 @@ bot.on('message', function (message) {
                 message.reply(`Post an issue here! Remember to be descriptive!\nhttps://github.com/Unbidden-Dev-Team/UnbiddenMod/issues`);
                 break;
             case 'changelog':
-                message.channel.send(changelogEmbed);
-                break;
-            case 'uMod add changelog':
-                changelogEmbed.addFields
+                if (args.length === 0) {
+                    message.channel.send(changelogEmbed);
+                } else if (args[0] === 'add') {
+                    if (args[1] !== undefined && args[2] !== undefined) {
+                        changelogEmbed.addFields(fieldBuilder(args[1], args[2]))
+                    } else {
+                        message.channel.send("You're missing some arguments to add to the changelog!");
+                    }
+                }
                 break;
             default:
                 message.channel.send("Sorry, I'm not sure what you mean by that. Please use \"!help\" to see the full list of commands.");

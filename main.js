@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { fieldBuilder, pluckFirstQuotedString, readChangelog, writeToLog, readSuggestionList, writeSuggestion, formatSuggestion } = require('./helpers');
+const { fieldBuilder, pluckFirstQuotedString, readChangelog, writeToLog, readSuggestionList, writeSuggestion, formatSuggestion, initializeSuggestionLog } = require('./helpers');
 var Discord = require('discord.js');
 var logger = require('winston');
 var auth = require('./auth.json');
@@ -25,17 +25,16 @@ let changelogEmbed = new Discord.MessageEmbed()
     .setImage('https://i.imgur.com/a/nX4113x.png')
     .setTimestamp()
     .setFooter('UnbiddenMod Dev Team', '');
+
 let suggestionsEmbed = new Discord.MessageEmbed()
     .setColor('#6a2aff')
-    .setTitle(`Changelog`)
-    .setURL('https://github.com/Unbidden-Dev-Team/UnbiddenMod')
+    .setTitle(`Suggestions`)
     .setAuthor('Unbidden Dev Team', 'https://i.imgur.com/a/nX4113x.png', 'https://github.com/Unbidden-Dev-Team/UnbiddenMod')
-    .setDescription('Suggestions')
     .setThumbnail('https://i.imgur.com/a/nX4113x.png')
-    .addFields(...suggestions)
-    .setImage('https://i.imgur.com/a/nX4113x.png')
     .setTimestamp()
     .setFooter('UnbiddenMod Dev Team', '');
+initializeSuggestionLog(suggestions, suggestionsEmbed);
+
 bot.username = 'UnbiddenBot';
 bot.on('ready', function (evt) {
     logger.info('Connected');
@@ -98,8 +97,8 @@ bot.on('message', function (message) {
                         message.channel.send("Your name is fairly long. Make sure it's actually your name, and if it is, concise it!");
                         break;
                     }
-                    const body = content.split('"')[1];
-                    const suggestion = formatSuggestion(name, body, message);
+                    const body = content.split('"')[3];
+                    const suggestion = formatSuggestion(name, body, message, suggestionsEmbed);
                     suggestions.push({ suggestion });
                     message.channel.send(suggestion);
                     writeSuggestion(JSON.stringify({ contents: suggestions }));

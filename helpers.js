@@ -6,7 +6,7 @@ const fieldBuilder = function(name, value) {
   return field;
 };
 const pluckFirstQuotedString = function(string) {
-  return `${string.split('"')[0]}`;
+  return `${string.split('"')[1]}`;
 };
 
 const readChangelog = function() {
@@ -27,9 +27,18 @@ const writeSuggestion = function(dataPlusChange) {
   fs.writeFileSync('suggestiondata.json', dataPlusChange);
 };
 
-const formatSuggestion = function(ideaName, ideaBody, message) {
+const formatSuggestion = function(ideaName, ideaBody, message, suggestionEmbed) {
   let s = `${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')}\n${ideaBody}`;
+  suggestionEmbed.addField(`${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')}`, ideaBody);
   return s;
+};
+
+const initializeSuggestionLog = function(suggestions, suggestionEmbed) {
+  suggestions.forEach(sugg => {
+    // This is damn weird, but I only blame myself. -Zack
+    let split = sugg.suggestion.split('\n');
+    suggestionEmbed.addField(split[0], split[1]);
+  });
 };
 
 module.exports = {
@@ -39,5 +48,6 @@ module.exports = {
   writeToLog,
   readSuggestionList,
   writeSuggestion,
-  formatSuggestion
+  formatSuggestion,
+  initializeSuggestionLog
 };

@@ -52,7 +52,7 @@ bot.on('message', function (message) {
         switch (cmd) {
             // !ping
             case 'help':
-                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\n- !suggest \"<name>\" \"<idea>\": Formats a suggestion automatically for you.\`\`\`");
+                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\n- !suggest \"<name>\" \"<idea>\": Formats a suggestion automatically for you. Put down just \"!suggest\" to see the list of suggestions.\`\`\`");
                 break;
             case 'wiki':
                 message.channel.send("Sorry, this command isn't set up yet!");
@@ -92,7 +92,7 @@ bot.on('message', function (message) {
                         break;
                     }
                     const name = `${pluckFirstQuotedString(args.join(" "))}`;
-                    if (name.length > 20)
+                    if (name.length > 40)
                     {
                         message.channel.send("Your name is fairly long. Make sure it's actually your name, and if it is, concise it!");
                         break;

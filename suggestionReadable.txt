@@ -1,0 +1,16 @@
+
+
+Bomber Ranger | <@249328472265195521> | 04 - 02 - 2021 | 1
+A ranger subclass that does pitiful direct damage, but relies on stacking debuffs (similar to nebula set's bonus buffs) and manual detonation for damage, with bonuses for pulling off longer chains of detonations. Think of it as planting multiple bombs, then pushing the plunger
+
+Special Death Animations | <@402246856752627713> | 04 - 02 - 2021 | 2
+Special death animations for bosses and minibosses.
+
+Material Names | <@402246856752627713> | 04 - 02 - 2021 | 3
+• Twisted Energy • Elemental Weave • Soul Essence • Soul Weave
+
+Icicle Glaive | <@402246856752627713> | 04 - 02 - 2021 | 4
+A spear which shoots snow cave icicles when you attack.
+
+Hemomancy Cleric | <@402246856752627713> | 04 - 02 - 2021 | 5
+A system where you collect blood from enemies via damaging them with melee weapons, and use that to empower your magic.

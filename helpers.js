@@ -23,8 +23,11 @@ const readSuggestionList = function() {
   return JSON.parse(d);
 };
 
-const writeSuggestion = function(dataPlusChange) {
+const writeSuggestion = function(dataPlusChange, justTheChange = null) {
   fs.writeFileSync('suggestiondata.json', dataPlusChange);
+  if (justTheChange != null) {
+    fs.appendFileSync('suggestionReadable.txt', `\n\n${justTheChange}`);
+  }
 };
 
 const formatSuggestion = function(ideaName, ideaBody, message, suggestionEmbed) {

@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { fieldBuilder, pluckFirstQuotedString, readChangelog, writeToLog } = require('./helpers');
+const { fieldBuilder, pluckFirstQuotedString, readChangelog, writeToLog, readSuggestionList, writeSuggestion, formatSuggestion } = require('./helpers');
 var Discord = require('discord.js');
 var logger = require('winston');
 var auth = require('./auth.json');
@@ -12,28 +12,40 @@ logger.add(new logger.transports.Console, {
 logger.level = 'debug';
 var bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
-const logAtBootup = readChangelog().contents;
+const changelog = readChangelog().contents;
+const suggestions = readSuggestionList().contents;
 let changelogEmbed = new Discord.MessageEmbed()
     .setColor('#6a2aff')
     .setTitle(`Changelog`)
     .setURL('https://github.com/Unbidden-Dev-Team/UnbiddenMod')
     .setAuthor('Unbidden Dev Team', 'https://i.imgur.com/a/nX4113x.png', 'https://github.com/Unbidden-Dev-Team/UnbiddenMod')
-	.setDescription('Mod Changes')
-	.setThumbnail('https://i.imgur.com/a/nX4113x.png')
-	.addFields(...logAtBootup)
-	.setImage('https://i.imgur.com/a/nX4113x.png')
-	.setTimestamp()
-	.setFooter('UnbiddenMod Dev Team', '');
+    .setDescription('Mod Changes')
+    .setThumbnail('https://i.imgur.com/a/nX4113x.png')
+    .addFields(...changelog)
+    .setImage('https://i.imgur.com/a/nX4113x.png')
+    .setTimestamp()
+    .setFooter('UnbiddenMod Dev Team', '');
+let suggestionsEmbed = new Discord.MessageEmbed()
+    .setColor('#6a2aff')
+    .setTitle(`Changelog`)
+    .setURL('https://github.com/Unbidden-Dev-Team/UnbiddenMod')
+    .setAuthor('Unbidden Dev Team', 'https://i.imgur.com/a/nX4113x.png', 'https://github.com/Unbidden-Dev-Team/UnbiddenMod')
+    .setDescription('Suggestions')
+    .setThumbnail('https://i.imgur.com/a/nX4113x.png')
+    .addFields(...suggestions)
+    .setImage('https://i.imgur.com/a/nX4113x.png')
+    .setTimestamp()
+    .setFooter('UnbiddenMod Dev Team', '');
 bot.username = 'UnbiddenBot';
-    bot.on('ready', function (evt) {
-        logger.info('Connected');
-        logger.info(`Logged in as: ${bot.user.tag}!`);
-    });
+bot.on('ready', function (evt) {
+    logger.info('Connected');
+    logger.info(`Logged in as: ${bot.user.tag}!`);
+});
 bot.on('message', function (message) {
     const user = message.author,
-          userID = user.id,
-          channelID = message.channel.id,
-          content = message.content;
+        userID = user.id,
+        channelID = message.channel.id,
+        content = message.content;
     if (content.substring(0, 1) == '!') {
         var args = content.substring(1).split(' ');
         var cmd = args[0];
@@ -41,7 +53,7 @@ bot.on('message', function (message) {
         switch (cmd) {
             // !ping
             case 'help':
-                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\`\`\`");
+                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\n- !suggest \"<name>\" \"<idea>\": Formats a suggestion automatically for you.\`\`\`");
                 break;
             case 'wiki':
                 message.channel.send("Sorry, this command isn't set up yet!");
@@ -58,8 +70,8 @@ bot.on('message', function (message) {
                 } else if (args[0] === 'add') {
                     if (args[1] !== undefined && args[2] !== undefined) {
                         const field = fieldBuilder(args.splice(1).join(" "), "Done");
-                        logAtBootup.push(field);
-                        writeToLog(JSON.stringify({contents: logAtBootup}, null, 2));
+                        changelog.push(field);
+                        writeToLog(JSON.stringify({ contents: changelog }, null, 2));
 
                         changelogEmbed.addFields(field);
                         message.channel.send("Done!");
@@ -69,6 +81,29 @@ bot.on('message', function (message) {
                     }
                 } else {
                     message.reply("I don't have that functionality for the changelog!");
+                }
+                break;
+
+            case 'suggest':
+                if (message.channel.name.toLowerCase() != 'suggestions') {
+                    message.channel.send(`Sorry, you are not in the suggestions channel! Please input your request at the suggestions channel.`);
+                } else {
+                    if (args.length === 0) {
+                        message.channel.send(suggestionsEmbed);
+                        break;
+                    }
+                    const name = `${pluckFirstQuotedString(args.join(" "))}`;
+                    if (name.length > 20)
+                    {
+                        message.channel.send("Your name is fairly long. Make sure it's actually your name, and if it is, concise it!");
+                        break;
+                    }
+                    const body = content.split('"')[1];
+                    const suggestion = formatSuggestion(name, body, message);
+                    suggestions.push({ suggestion });
+                    message.channel.send(suggestion);
+                    writeSuggestion(JSON.stringify({ contents: suggestions }));
+                    message.delete();
                 }
                 break;
             default:

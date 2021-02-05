@@ -30,8 +30,8 @@ const writeSuggestion = function(dataPlusChange, justTheChange = null) {
   }
 };
 
-const formatSuggestion = function(ideaName, ideaBody, message, suggestionEmbed) {
-  let s = `${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')}\n${ideaBody}`;
+const formatSuggestion = function(ideaName, ideaBody, message, suggestionEmbed, suggestions) {
+  let s = `${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')} | ${suggestions.length + 1}\n${ideaBody}`;
   suggestionEmbed.addField(`${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')}`, ideaBody);
   return s;
 };

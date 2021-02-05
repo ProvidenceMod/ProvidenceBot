@@ -98,8 +98,8 @@ bot.on('message', function (message) {
                         break;
                     }
                     const body = content.split('"')[3];
-                    const suggestion = formatSuggestion(name, body, message, suggestionsEmbed);
-                    suggestions.push({ suggestion });
+                    const suggestion = formatSuggestion(name, body, message, suggestionsEmbed, suggestions);
+                    suggestions.push({ suggestion, id: suggestions.length + 1 });
                     message.channel.send(suggestion);
                     writeSuggestion(JSON.stringify({ contents: suggestions }), suggestion);
                     message.delete();

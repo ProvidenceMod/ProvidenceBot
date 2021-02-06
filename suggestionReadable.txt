@@ -26,3 +26,6 @@ undefined
 
 Grave Robber | <@117819195432894466> | 04 - 02 - 2021 | 9
 Boss gimmick that detects and gains a stacking buff from nearby tombstones. Punishes players who do not clean after their deaths. Maybe when spawned, it throws out a few generic tombstones. Bonus reward when killed with more Tombstone buffs, like players who want to scale their farming.
+
+Hail Fire Spell | <@249328472265195521> | 06 - 02 - 2021 | 10
+shoots one large but slow projectile, and that fires a swarm of smaller projectiles, ends upon the main part hitting a enemy or wall

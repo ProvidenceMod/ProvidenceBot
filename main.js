@@ -97,7 +97,11 @@ bot.on('message', function (message) {
                     }
                     if (args[0] === 'help')
                     {
-                        message.channel.send("\`\`\`Suggest formatting: You must wrap your name and body in [], {}, or (), and both the name and body must have the same wrapper. ex. \"!suggest [ideaName] [ideaBody]\". \"!suggest [ideaName] {ideaBody}\" will not work.\`\`\`");
+                        message.channel.send("\`\`\`Suggest formatting: You must wrap your name and body in [], {}, or (), and both the name and body must have the same wrapper. ex. \"!suggest [ideaName] [ideaBody]\". \"!suggest [ideaName] {ideaBody}\" will not work.\nDo \"!suggest format\" to see the raw format. In case you're curious.\`\`\`");
+                        break;
+                    }
+                    if (args[0] === 'format') {
+                        message.channel.send("\`\`\`\nIdea Name | User | Date (DD-MM-YYYY) | ID\nIdea Body\n\`\`\`");
                         break;
                     }
                     let wrappedArgs;
@@ -119,7 +123,6 @@ bot.on('message', function (message) {
                         message.channel.send("I think you might have some formatting wrong. Try again!");
                         break;
                     }
-                    console.log(wrappedArgs);
                     const name = wrappedArgs[0];
                     if (name === undefined)
                     {

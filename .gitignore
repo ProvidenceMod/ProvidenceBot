@@ -1,2 +1,5 @@
 .env
 node_modules
+changelogdataDebug.json
+suggestiondataDebug.json
+suggestionReadableDebug.txt

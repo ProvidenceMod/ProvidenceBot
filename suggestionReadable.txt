@@ -14,3 +14,15 @@ A spear which shoots snow cave icicles when you attack.
 
 Hemomancy Cleric | <@402246856752627713> | 04 - 02 - 2021 | 5
 A system where you collect blood from enemies via damaging them with melee weapons, and use that to empower your magic.
+
+undefined | <@331912877340622858> | 04 - 02 - 2021 | 6
+undefined
+
+Tomb stone | <@402246856752627713> | 04 - 02 - 2021 | 7
+a placeable object that summons a zombie with slightly boosted stats to fight for you - Terry
+
+undefined | <@331912877340622858> | 04 - 02 - 2021 | 8
+undefined
+
+Grave Robber | <@117819195432894466> | 04 - 02 - 2021 | 9
+Boss gimmick that detects and gains a stacking buff from nearby tombstones. Punishes players who do not clean after their deaths. Maybe when spawned, it throws out a few generic tombstones. Bonus reward when killed with more Tombstone buffs, like players who want to scale their farming.

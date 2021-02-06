@@ -5,7 +5,7 @@ var logger = require('winston');
 var auth = require('./auth.json');
 
 // MAKE SURE TO TURN THIS ON WHEN TESTING.
-const debug = true;
+const debug = false;
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -56,7 +56,7 @@ bot.on('message', function (message) {
         switch (cmd) {
             // !ping
             case 'help':
-                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\n- !suggest [<name>] [<idea>]: Formats a suggestion automatically for you. Put down just \"!suggest\" to see the list of suggestions.\nYou must wrap your name and body in [], {}, or (), and both the name and body must have the same wrapper. ex. \"!suggest [ideaName] [ideaBody]\".\`\`\`");
+                message.channel.send("\`\`\`\nWelcome to UnbiddenBot!\nI am currently a Work In Progress, so some commands will not work. If they don't, we will let you know when you try to run it.\n\nOur current commands:\n- !help: Displays this message.\n- !wiki <entry>: Displays the entry provided.\n- !github: Provides a link to the source code, if you're a little curious of the inner machinations.\n- !ihaveabug: Links you to the Issues page of our code, so you can put your issue out there.\n- !changelog: View the changelog, to see what we've done so far.\n- !suggest [<name>] [<idea>]: Formats a suggestion automatically for you. Put down just \"!suggest\" to see the list of suggestions. Put down \"!suggest help\" for more details.\n\".\`\`\`");
                 break;
             case 'wiki':
                 message.channel.send("Sorry, this command isn't set up yet!");
@@ -93,6 +93,11 @@ bot.on('message', function (message) {
                 } else {
                     if (args.length === 0) {
                         message.channel.send(suggestionsEmbed);
+                        break;
+                    }
+                    if (args[0] === 'help')
+                    {
+                        message.channel.send("\`\`\`Suggest formatting: You must wrap your name and body in [], {}, or (), and both the name and body must have the same wrapper. ex. \"!suggest [ideaName] [ideaBody]\". \"!suggest [ideaName] {ideaBody} will not work.\"\`\`\`");
                         break;
                     }
                     let wrappedArgs;

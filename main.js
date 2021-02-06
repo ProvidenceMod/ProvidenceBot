@@ -5,7 +5,7 @@ var logger = require('winston');
 var auth = require('./auth.json');
 
 // MAKE SURE TO TURN THIS ON WHEN TESTING.
-const debug = false;
+let debug = false;
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -97,7 +97,7 @@ bot.on('message', function (message) {
                     }
                     if (args[0] === 'help')
                     {
-                        message.channel.send("\`\`\`Suggest formatting: You must wrap your name and body in [], {}, or (), and both the name and body must have the same wrapper. ex. \"!suggest [ideaName] [ideaBody]\". \"!suggest [ideaName] {ideaBody} will not work.\"\`\`\`");
+                        message.channel.send("\`\`\`Suggest formatting: You must wrap your name and body in [], {}, or (), and both the name and body must have the same wrapper. ex. \"!suggest [ideaName] [ideaBody]\". \"!suggest [ideaName] {ideaBody}\" will not work.\`\`\`");
                         break;
                     }
                     let wrappedArgs;
@@ -139,6 +139,32 @@ bot.on('message', function (message) {
                     message.channel.send(suggestion);
                     writeSuggestion(JSON.stringify({ contents: suggestions }), suggestion, debug);
                     message.delete();
+                }
+                break;
+            case 'debug':
+                const senderHasPrivilege = message.member.roles.cache.find(r => r.name === "Developers" || r.name === "Admin");
+                if (senderHasPrivilege) {
+                    if (args.length === 0) {
+                        message.channel.send(`Debug mode is currently ${debug ? "ON" : "OFF"}`);
+                    }
+                    if (args[0] === 'toggle')
+                    {
+                        debug = !debug;
+                        message.channel.send(`Debug mode is now ${debug ? "ON" : "OFF"}. Please keep in mind these changes apply everywhere on Discord!`);
+                        break;
+                    }
+                    if (args[0] === 'on') {
+                        debug = true;
+                        message.channel.send(`Debug mode is now ${debug ? "ON" : "OFF"}. Please keep in mind these changes apply everywhere on Discord!`);
+                        break;
+                    }
+                    if (args[0] === 'off') {
+                        debug = false;
+                        message.channel.send(`Debug mode is now ${debug ? "ON" : "OFF"}. Please keep in mind these changes apply everywhere on Discord!`);
+                        break;
+                    }
+                } else {
+                    break;
                 }
                 break;
             default:

@@ -29,3 +29,12 @@ Boss gimmick that detects and gains a stacking buff from nearby tombstones. Puni
 
 Hail Fire Spell | <@249328472265195521> | 06 - 02 - 2021 | 10
 shoots one large but slow projectile, and that fires a swarm of smaller projectiles, ends upon the main part hitting a enemy or wall
+
+flail of flails | <@331912877340622858> | 06 - 02 - 2021 | 14
+a flail with smaller flails at the end
+
+Lore NPCs | <@117819195432894466> | 06 - 02 - 2021 | 15
+In order to breathe more life into the lore, or existence of other races or kingdom reps, have some 'lesser NPCs' capable of joining up.  Instead of selling items, they could have extra dialogue options to casually talk about this topic or that.
+
+Pet Merchant | <@117819195432894466> | 06 - 02 - 2021 | 16
+NPC vendor who unlocks pet versions of bosses you defeat.  Hilarious when you start defeating archangels and old gods!

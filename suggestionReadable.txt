@@ -38,3 +38,33 @@ In order to breathe more life into the lore, or existence of other races or king
 
 Pet Merchant | <@117819195432894466> | 06 - 02 - 2021 | 16
 NPC vendor who unlocks pet versions of bosses you defeat.  Hilarious when you start defeating archangels and old gods!
+
+library of swords | <@331912877340622858> | 06 - 02 - 2021 | 17
+a channels magic spell that summons and shoots sword towards the cursor, could have higher lvl variants with nice and more swords
+
+Party Popper Gun | <@117819195432894466> | 06 - 02 - 2021 | 18
+More uses for the confetti graphic, possible to upgrade to a cannon if you want to risk it becoming a MLP ref. Possibly to cause Confusion to enemies, possibly to grant buffs to nearby allies.
+
+party bomb | <@331912877340622858> | 06 - 02 - 2021 | 19
+it’s just a normal bomb but also has confetti
+
+sawblade | <@331912877340622858> | 06 - 02 - 2021 | 20
+a minion that’s the saw trap from the dungeon, just non hostile
+
+PECK | <@117819195432894466> | 06 - 02 - 2021 | 21
+spell that deals a low damage multi-hit attack, low Mana, and zero cool down. Attack faster than you can click!
+
+cape of snowfall | <@331912877340622858> | 06 - 02 - 2021 | 22
+allows a short dash with invulnerability where you turn into snow flakes
+
+harpy’s yolk | <@331912877340622858> | 06 - 02 - 2021 | 23
+under certain conditions ,perhaps like above a certain height, you turn into a harpy, ala werewolf and merfolk
+
+grappler | <@331912877340622858> | 06 - 02 - 2021 | 24
+a enemy who tries to grab and throw the player
+
+Astral Bombardment | <@409768934196117504> | 06 - 02 - 2021 | 25
+Basically a spell which causes stuff from space to rain down on your enemies, costs a lot of mana but does a ton of damage
+
+Music-based support | <@249328472265195521> | 06 - 02 - 2021 | 26
+Like a Bard or a Monster Hunter hunter with a Hunting Horn, you beat the crap out of enemies and do special supportive effects for you and your party depending on what you hit them with in which order

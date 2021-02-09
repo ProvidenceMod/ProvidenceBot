@@ -74,3 +74,42 @@ Use icons to our advantage when drawing Tooltips, to allow giving brief descript
 
 UI Enhancement | <@402246856752627713> | 06 - 02 - 2021 | 28
 Use icons to our advantage when enemies are afflicted with a debuff, allowing us to draw the icons of the debuffs they are inflicted with underneath their health bar to give players a brief summary of the debuffs they are afflicted with. Make this a toggleable feature
+
+A new mage weapon | <@409768934196117504> | 06 - 02 - 2021 | 29
+shoots out a projectile that does damage to enemies and disappears when it comes into contact with enemies, however if it doesn't come into contact with an enemy, it will slowly return to the player, buffing them and restoring health
+
+new spray fire gun | <@409768934196117504> | 06 - 02 - 2021 | 30
+this gun sprays out bullets in a cone looking pattern. The longer you shoot, the cone shape gets smaller until it's just a precise line of bullets being fired. As the cone games smaller, damage and crit chances are increased
+
+a fan | <@409768934196117504> | 06 - 02 - 2021 | 31
+a fan item that players can hold and activate. Activating the fan while holding it will cause the player to slowly move backwards. I can't think of a practical use, but it could be an interesting and unique item
+
+Druid circle spell | <@331912877340622858> | 06 - 02 - 2021 | 32
+has the Druids circle but if a friend gets hurt it heals, and if a enemy enters the circle it gets hurt, high mana upkeep, but strong
+
+more useful mounts | <@409768934196117504> | 06 - 02 - 2021 | 33
+mounts that have weapons. Not meant to be something to fight bosses with but just making getting around the world a bit easier. It could be anything from a dragon that breaths fire to a mech with lazers
+
+Blueprint Mode | <@409768934196117504> | 06 - 02 - 2021 | 34
+A way to place down "blueprint blocks" which allow you to plan out your builds before fully making them, a lot like the blueprints in factorio in a way but not really
+
+coolicorm | <@331912877340622858> | 06 - 02 - 2021 | 35
+it’s a unicorn with a cigar sunglasses, and a chain gun on its side, and when mounted it auto fires at things in front of it for okayish damage
+
+Vampiric Weapons | <@409768934196117504> | 06 - 02 - 2021 | 36
+Alt title, blood weapons. Basically a vampire knives equivalent for each class. A sword that heals, a spell that heals, a gun that heals *cough* red death *cough*, etc
+
+vampires fang | <@331912877340622858> | 06 - 02 - 2021 | 37
+accessory, gives low power version of vampire knife life steal
+
+can of energy drink | <@409768934196117504> | 06 - 02 - 2021 | 38
+this accessory gives you a speed boost as long as you have it equipped, designed to be found in wooden chests during early prehardmode
+
+boink nuclear drink | <@331912877340622858> | 06 - 02 - 2021 | 39
+doubles damage you do, but could double or triple damage taken
+
+Bounty/NPC giver | <@409768934196117504> | 06 - 02 - 2021 | 40
+Adds bounties, short fetch quests, for each NPC. They reset in-game daily and give varying rewards based on the difficulty of the quest. As more NPCs are unlocked, the earlier NPCs also get new quests. This'll just be to make sure that players won't completely ignore the earlier NPCs in lategame. There could be a vendor that tracks how many you've done and depending on how many you've done, his inventory of items to sell will get bigger and bigger.
+
+fisher vendor | <@331912877340622858> | 06 - 02 - 2021 | 41
+have a way to get some more rng fishing g rewards also be able to be bought for crazy high rates

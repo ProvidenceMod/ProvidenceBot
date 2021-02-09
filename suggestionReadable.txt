@@ -68,3 +68,9 @@ Basically a spell which causes stuff from space to rain down on your enemies, co
 
 Music-based support | <@249328472265195521> | 06 - 02 - 2021 | 26
 Like a Bard or a Monster Hunter hunter with a Hunting Horn, you beat the crap out of enemies and do special supportive effects for you and your party depending on what you hit them with in which order
+
+Tooltip Enhancement | <@402246856752627713> | 06 - 02 - 2021 | 27
+Use icons to our advantage when drawing Tooltips, to allow giving brief descriptions of long lists like debuff immunities
+
+UI Enhancement | <@402246856752627713> | 06 - 02 - 2021 | 28
+Use icons to our advantage when enemies are afflicted with a debuff, allowing us to draw the icons of the debuffs they are inflicted with underneath their health bar to give players a brief summary of the debuffs they are afflicted with. Make this a toggleable feature

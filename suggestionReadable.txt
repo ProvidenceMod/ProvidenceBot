@@ -113,3 +113,21 @@ Adds bounties, short fetch quests, for each NPC. They reset in-game daily and gi
 
 fisher vendor | <@331912877340622858> | 06 - 02 - 2021 | 41
 have a way to get some more rng fishing g rewards also be able to be bought for crazy high rates
+
+Blood Vial | <@402246856752627713> | 08 - 02 - 2021 | 42
+Blood potions, potentially to restore Blood for Blood Clerics in the same way that Mana potions restore Mana for Mages. Inflicts Blood Sickness
+
+blood | <@331912877340622858> | 08 - 02 - 2021 | 43
+a liquid faster than lava, slower than water, could give regen to so,e monsters
+
+Material | <@402246856752627713> | 08 - 02 - 2021 | 44
+Silk combined with Fallen Stars at a Starloom make Starfiber. Starfiber combined with one of each soul at a hardmode anvil makes Soulweave
+
+Elemental Display | <@402246856752627713> | 08 - 02 - 2021 | 45
+Show the elemental types of enemies next to or underneath their health bars, or on mouseover next to their name.
+
+sippy cup potions | <@331912877340622858> | 08 - 02 - 2021 | 46
+a joke item that restores less than the default potions
+
+mercury rain | <@331912877340622858> | 08 - 02 - 2021 | 47
+kinda like golden shower but less cringe and more melting flesh, I think it does that?

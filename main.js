@@ -140,7 +140,7 @@ bot.on('message', function (message) {
                     const suggestion = formatSuggestion(name, body, message, suggestionsEmbed, suggestions);
                     suggestions.push({ suggestion, id: suggestions.length + 1 });
                     message.channel.send(suggestion);
-                    writeSuggestion(JSON.stringify({ contents: suggestions }), suggestion, debug);
+                    writeSuggestion(JSON.stringify({ contents: suggestions }, null, 2), suggestion, debug);
                     message.delete();
                 }
                 break;

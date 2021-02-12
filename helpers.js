@@ -1,5 +1,5 @@
 var fs = require('fs');
-var moment = require('moment')();
+var moment = require('moment');
 const fieldBuilder = function(name, value) {
   const field = { name, value };
   field.name = name.slice(1, field.name.length - 1);
@@ -64,8 +64,8 @@ const writeSuggestion = function(dataPlusChange, justTheChange = null, debug = f
 };
 
 const formatSuggestion = function(ideaName, ideaBody, message, suggestionEmbed, suggestions) {
-  let s = `${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')} | ${suggestions.length + 1}\n${ideaBody}`;
-  suggestionEmbed.addField(`${ideaName} | ${message.author} | ${moment.format('DD[ - ]MM[ - ]YYYY')}`, ideaBody);
+  let s = `${ideaName} | ${message.author} | ${moment().format('DD[ - ]MM[ - ]YYYY')} | ${suggestions.length + 1}\n${ideaBody}`;
+  suggestionEmbed.addField(`${ideaName} | ${message.author} | ${moment().format('DD[ - ]MM[ - ]YYYY')}`, ideaBody);
   return s;
 };
 

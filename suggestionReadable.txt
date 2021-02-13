@@ -131,3 +131,15 @@ a joke item that restores less than the default potions
 
 mercury rain | <@331912877340622858> | 08 - 02 - 2021 | 47
 kinda like golden shower but less cringe and more melting flesh, I think it does that?
+
+Trials Of Lysanderia | <@409768934196117504> | 12 - 02 - 2021 | 48
+I can't remember how to spell her name. An ultra hardcore mode, not sure how we could flesh it out and make it unique tho
+
+risk of rockets | <@331912877340622858> | 12 - 02 - 2021 | 49
+a accessory that which each attack has a chance to span a missile that seeks and damages a enemy, kinda like the risk of rain missile launcher
+
+Catastrophe Mode | <@117819195432894466> | 12 - 02 - 2021 | 50
+A scroll that gives a temp effect to add a bunch zeros to the displayed damage numbers dealt and received. Cosmetic.
+
+spitter slime | <@331912877340622858> | 12 - 02 - 2021 | 51
+it spits a glob of slime and if it misses, a normal slime spawns, the spitter is pretty immobile

@@ -11,7 +11,7 @@ namespace ProvidenceBot.Commands
   public class Suggest : BaseCommandModule
   {
     [Command("suggest")]
-    [Description("Suggests something in the #suggestions channel.")]
+    [Description("Suggests something in the #suggestions channel. Step by step for readability!")]
     public async Task Suggestion(CommandContext context)
     {
       if (context.Channel.Name != "suggestions")

@@ -11,6 +11,7 @@ namespace ProvidenceBot.Commands
   public class Debug : BaseCommandModule
   { 
     [Command("debug")]
+    [Hidden]
     [Description("Provides various commands for debugging the bot while it's running. Moderator use only!")]
     [RequirePermissions(DSharpPlus.Permissions.Administrator)]
     public async Task DebugRun(CommandContext context, [Description("Optional argument to specify what you need to do. Leave blank to toggle debug.")] string specification = "")

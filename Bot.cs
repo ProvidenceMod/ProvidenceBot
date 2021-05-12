@@ -36,8 +36,6 @@ namespace ProvidenceBot
         TokenType = TokenType.Bot,
         AutoReconnect = true,
         MinimumLogLevel = LogLevel.Debug,
-
-
       };
       Client = new DiscordClient(config);
 

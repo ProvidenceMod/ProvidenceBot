@@ -34,26 +34,27 @@ namespace ProvidenceBot.Commands
 
         //-----MAIN CATEGORY-----//
 
-        DiscordEmbedBuilder mainCategoryBuilder = new DiscordEmbedBuilder();
-        mainCategoryBuilder.WithTitle("Please choose the type of suggestion you will be making:");
-        mainCategoryBuilder.WithColor(color);
-        mainCategoryBuilder.AddField("1. GUI", "User Interface");
-        mainCategoryBuilder.AddField("2. Feature", "Feature or Change");
-        mainCategoryBuilder.AddField("3. Entity", "Items, NPCs, Projectiles, Tiles, etc");
-        mainCategoryBuilder.AddField("4. Mechanic", "Combat Mechanics, Player Mechanics, Enemy Mechanics, etc");
-        mainCategoryBuilder.AddField("5. Worldgen", "Biomes, Subworlds, Structures, etc");
+        DiscordEmbedBuilder suggestionBuilder = new DiscordEmbedBuilder();
+        suggestionBuilder.WithTitle("Please choose the type of suggestion you will be making:");
+        suggestionBuilder.WithColor(color);
+        suggestionBuilder.AddField("1. GUI", "User Interface");
+        suggestionBuilder.AddField("2. Feature", "Feature or Change");
+        suggestionBuilder.AddField("3. Entity", "Items, NPCs, Projectiles, Tiles, etc");
+        suggestionBuilder.AddField("4. Mechanic", "Combat Mechanics, Player Mechanics, Enemy Mechanics, etc");
+        suggestionBuilder.AddField("5. Worldgen", "Biomes, Subworlds, Structures, etc");
 
-        DiscordMessage mainCategoryQuestion = await context.Channel.SendMessageAsync(mainCategoryBuilder.Build()).ConfigureAwait(false);
+        DiscordMessage mainCategoryQuestion = await context.Channel.SendMessageAsync(suggestionBuilder.Build()).ConfigureAwait(false);
         InteractivityExtension mainCategoryInteractivity = context.Client.GetInteractivity();
         InteractivityResult<DiscordMessage> mainCategoryResponse = await mainCategoryInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
         DiscordMessage mainCategoryMessage = mainCategoryResponse.Result;
-        await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
+        // await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
         await mainCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
         int mResult = int.Parse(mainCategoryMessage.Content);
         if (mResult != 1 && mResult != 2 && mResult != 3 && mResult != 4 && mResult != 5)
         {
-          await context.Channel.SendMessageAsync("Please enter a valid option.").ConfigureAwait(false);
+          DiscordMessage validOptionWarn = await context.Channel.SendMessageAsync("Please enter a valid option.").ConfigureAwait(false);
+          validOptionWarn.DeleteAsync()
         }
         else
         {
@@ -73,19 +74,21 @@ namespace ProvidenceBot.Commands
 
               //-----ENTITY CATEGORY-----//
 
-              DiscordEmbedBuilder entityCategoryBuilder = new DiscordEmbedBuilder();
-              entityCategoryBuilder.WithTitle("Please choose the type of entity you will be suggesting.");
-              entityCategoryBuilder.WithColor(color);
-              entityCategoryBuilder.AddField("1. Item", "Accessories, Weapons, Potions, etc");
-              entityCategoryBuilder.AddField("2. NPC", "Critters, Town NPCs, Miniboss NPCs, etc");
-              entityCategoryBuilder.AddField("3. Projectile", "Boss Projectiles, Environmental Projectiles, Weapon Projectiles, etc");
-              entityCategoryBuilder.AddField("4. Tile", "Building Tiles, Worldgen Tiles, Utility Tiles, etc");
+              // DiscordEmbedBuilder entityCategoryBuilder = new DiscordEmbedBuilder();
+              suggestionBuilder.ClearFields();
+              suggestionBuilder.WithTitle("Please choose the type of entity you will be suggesting.");
+              suggestionBuilder.WithColor(color);
+              suggestionBuilder.AddField("1. Item", "Accessories, Weapons, Potions, etc");
+              suggestionBuilder.AddField("2. NPC", "Critters, Town NPCs, Miniboss NPCs, etc");
+              suggestionBuilder.AddField("3. Projectile", "Boss Projectiles, Environmental Projectiles, Weapon Projectiles, etc");
+              suggestionBuilder.AddField("4. Tile", "Building Tiles, Worldgen Tiles, Utility Tiles, etc");
+              await mainCategoryQuestion.ModifyAsync(msg => msg.Embed = suggestionBuilder.Build()).ConfigureAwait(false);
 
-              DiscordMessage entityCategoryQuestion = await context.Channel.SendMessageAsync(entityCategoryBuilder.Build()).ConfigureAwait(false);
+              // DiscordMessage entityCategoryQuestion = await context.Channel.SendMessageAsync(suggestionBuilder.Build()).ConfigureAwait(false);
               InteractivityExtension entityCategoryInteractivity = context.Client.GetInteractivity();
               InteractivityResult<DiscordMessage> entityCategoryResponse = await entityCategoryInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
               DiscordMessage entityCategoryMessage = entityCategoryResponse.Result;
-              await entityCategoryQuestion.DeleteAsync().ConfigureAwait(false);
+              // await entityCategoryQuestion.DeleteAsync().ConfigureAwait(false);
               await entityCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
               int eResult = int.Parse(entityCategoryMessage.Content);
@@ -103,28 +106,30 @@ namespace ProvidenceBot.Commands
 
                 //-----GAMESTAGE-----//
 
-                DiscordEmbedBuilder entityGamestageBuilder = new DiscordEmbedBuilder();
-                entityGamestageBuilder.WithTitle("Please choose the gamestage that this entity should appear during.");
-                entityGamestageBuilder.WithColor(color);
-                entityGamestageBuilder.AddField("1. Pre-bosses", "Before any boss is fought, this entity will be present for the entire playthrough");
-                entityGamestageBuilder.AddField("2. Pre-Hardmode", "Before entering Hardmode");
-                entityGamestageBuilder.AddField("3. Pre-mechanical bosses", "Before fighting the mechanical bosses");
-                entityGamestageBuilder.AddField("4. Pre-Plantera", "Before fighting Plantera");
-                entityGamestageBuilder.AddField("5. Pre-Golem", "Before fighting Golem");
-                entityGamestageBuilder.AddField("6. Pre-Lunar Events", "Before initiating the Lunar Events");
-                entityGamestageBuilder.AddField("7. Post-Moonlord", "After killing Moonlord");
-
-                DiscordMessage entityGamestageQuestion = await context.Channel.SendMessageAsync(entityGamestageBuilder.Build()).ConfigureAwait(false);
+                // DiscordEmbedBuilder entityGamestageBuilder = new DiscordEmbedBuilder();
+                suggestionBuilder.ClearFields();
+                suggestionBuilder.WithTitle("Please choose the gamestage that this entity should appear during.");
+                suggestionBuilder.WithColor(color);
+                suggestionBuilder.AddField("1. Pre-bosses", "Before any boss is fought, this entity will be present for the entire playthrough");
+                suggestionBuilder.AddField("2. Pre-Hardmode", "Before entering Hardmode");
+                suggestionBuilder.AddField("3. Pre-mechanical bosses", "Before fighting the mechanical bosses");
+                suggestionBuilder.AddField("4. Pre-Plantera", "Before fighting Plantera");
+                suggestionBuilder.AddField("5. Pre-Golem", "Before fighting Golem");
+                suggestionBuilder.AddField("6. Pre-Lunar Events", "Before initiating the Lunar Events");
+                suggestionBuilder.AddField("7. Post-Moonlord", "After killing Moonlord");
+                await mainCategoryQuestion.ModifyAsync(msg => msg.Embed = suggestionBuilder.Build()).ConfigureAwait(false);
+                
+                // DiscordMessage entityGamestageQuestion = await context.Channel.SendMessageAsync(entityGamestageBuilder.Build()).ConfigureAwait(false);
                 InteractivityExtension entityGamestageInteractivity = context.Client.GetInteractivity();
                 InteractivityResult<DiscordMessage> entityGamestageResponse = await entityGamestageInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
                 DiscordMessage entityGamestageMessage = entityGamestageResponse.Result;
-                await entityGamestageQuestion.DeleteAsync().ConfigureAwait(false);
+                // await entityGamestageQuestion.DeleteAsync().ConfigureAwait(false);
                 await entityGamestageMessage.DeleteAsync().ConfigureAwait(false);
 
                 int egResult = int.Parse(entityCategoryMessage.Content);
                 if (egResult != 1 && egResult != 2 && egResult != 3 && egResult != 4 && egResult != 5 && egResult != 6 && egResult != 7)
                 {
-                  await context.Channel.SendMessageAsync("Please enter a valid option.").ConfigureAwait(false);
+                  DiscordMessage validOptionWarn = await context.Channel.SendMessageAsync("Please enter a valid option.").ConfigureAwait(false);
                 }
                 else
                 {

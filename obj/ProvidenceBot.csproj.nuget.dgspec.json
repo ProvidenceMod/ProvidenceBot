@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vtuck\\Documents\\Code Projects\\ProvidenceBot\\ProvidenceBot.csproj": {}
+    "C:\\Users\\Zack Callais\\Documents\\Coding\\ProvidenceBot\\ProvidenceBot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vtuck\\Documents\\Code Projects\\ProvidenceBot\\ProvidenceBot.csproj": {
+    "C:\\Users\\Zack Callais\\Documents\\Coding\\ProvidenceBot\\ProvidenceBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vtuck\\Documents\\Code Projects\\ProvidenceBot\\ProvidenceBot.csproj",
+        "projectUniqueName": "C:\\Users\\Zack Callais\\Documents\\Coding\\ProvidenceBot\\ProvidenceBot.csproj",
         "projectName": "ProvidenceBot",
-        "projectPath": "C:\\Users\\vtuck\\Documents\\Code Projects\\ProvidenceBot\\ProvidenceBot.csproj",
-        "packagesPath": "C:\\Users\\vtuck\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vtuck\\Documents\\Code Projects\\ProvidenceBot\\obj\\",
+        "projectPath": "C:\\Users\\Zack Callais\\Documents\\Coding\\ProvidenceBot\\ProvidenceBot.csproj",
+        "packagesPath": "C:\\Users\\Zack Callais\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Zack Callais\\Documents\\Coding\\ProvidenceBot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vtuck\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Zack Callais\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,8 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.emzi0767.com/api/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -69,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

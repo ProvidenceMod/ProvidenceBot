@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DSharpPlus;
+using System;
+using System.Threading.Tasks;
 
 namespace ProvidenceBot
 {
@@ -9,5 +11,7 @@ namespace ProvidenceBot
       Bot bot = new Bot();
       bot.RunAsync().GetAwaiter().GetResult();
     }
+
+
   }
 }

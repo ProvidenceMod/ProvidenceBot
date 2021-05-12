@@ -58,8 +58,25 @@ namespace ProvidenceBot
 
       Commands = Client.UseCommandsNext(commandsConfig);
 
-      Commands.RegisterCommands<Commands.Suggest>();
-
+      Commands.RegisterCommands<Suggest>();
+      var discord = new DiscordClient(config);
+      discord.MessageCreated += async (s, e) =>
+      {
+        if (e.Message.Content[0].ToString() == configJson.Prefix)
+        {
+          string[] words = e.Message.Content.ToLower().Substring(1).Split(" ");
+          string arg = words[0];
+          switch (arg)
+          {
+            case "help":
+              await e.Message.RespondAsync("You too?");
+              break;
+            default:
+              await e.Message.RespondAsync("I don't know what you're saying! Try harder!");
+              break;
+          }
+        }
+      };
       await Client.ConnectAsync();
       await Task.Delay(-1);
     }

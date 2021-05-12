@@ -49,7 +49,7 @@ namespace ProvidenceBot
       CommandsNextConfiguration commandsConfig = new CommandsNextConfiguration()
       {
         StringPrefixes = new string[] { configJson.Prefix },
-        EnableDms = false,
+        EnableDms = true,
         EnableMentionPrefix = true,
         DmHelp = true,
       };

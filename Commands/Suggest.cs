@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Text;
 using DSharpPlus.Entities;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using Newtonsoft.Json;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.Interactivity;
 
@@ -18,7 +16,7 @@ namespace ProvidenceBot.Commands
     {
       if (context.Channel.Name != "suggestions")
       {
-        await context.Channel.SendMessageAsync("Wrong channel! Please go to #suggestions !");
+        await context.Channel.SendMessageAsync("Wrong channel! Please go to the suggestions channel!");
       }
       else
       { 
@@ -33,10 +31,11 @@ namespace ProvidenceBot.Commands
         InteractivityResult<DiscordMessage> descriptionResponse = await descriptionInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
         DiscordMessage descriptionMessage = descriptionResponse.Result;
         await context.Channel.SendMessageAsync($"{titleMessage.Content} | {context.User.Mention} | {DateTime.Now.Day} - {DateTime.Now.Month} - {DateTime.Now.Year}\n{descriptionMessage.Content}");
-        await titleQuestion.DeleteAsync();
         await titleMessage.DeleteAsync();
-        await descriptionQuestion.DeleteAsync();
         await descriptionMessage.DeleteAsync();
+        await titleQuestion.DeleteAsync();
+        await descriptionQuestion.DeleteAsync();
+        await context.Message.DeleteAsync();
       }
     }
   }

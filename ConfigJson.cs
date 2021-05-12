@@ -11,5 +11,6 @@ namespace ProvidenceBot
     public string Token { get; private set; }
     [JsonProperty("prefix")]
     public string Prefix { get; private set; }
+    public bool DebugMode { get; private set; }
   }
 }

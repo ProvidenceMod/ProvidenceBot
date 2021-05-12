@@ -19,6 +19,7 @@ namespace ProvidenceBot
     public DiscordClient Client { get; private set; }
     public InteractivityExtension Interactivity { get; private set; }
     public CommandsNextExtension Commands { get; private set; }
+    public static bool debugMode;
 
     public async Task RunAsync()
     {
@@ -35,8 +36,10 @@ namespace ProvidenceBot
         Token = configJson.Token,
         TokenType = TokenType.Bot,
         AutoReconnect = true,
-        MinimumLogLevel = LogLevel.Debug,
+        MinimumLogLevel = LogLevel.Debug
       };
+      debugMode = configJson.DebugMode;
+
       Client = new DiscordClient(config);
 
       Client.Ready += OnClientReady;
@@ -57,24 +60,7 @@ namespace ProvidenceBot
       Commands = Client.UseCommandsNext(commandsConfig);
 
       Commands.RegisterCommands<Suggest>();
-      var discord = new DiscordClient(config);
-      discord.MessageCreated += async (s, e) =>
-      {
-        if (e.Message.Content[0].ToString() == configJson.Prefix)
-        {
-          string[] words = e.Message.Content.ToLower().Substring(1).Split(" ");
-          string arg = words[0];
-          switch (arg)
-          {
-            case "help":
-              await e.Message.RespondAsync("You too?");
-              break;
-            default:
-              await e.Message.RespondAsync("I don't know what you're saying! Try harder!");
-              break;
-          }
-        }
-      };
+      Commands.RegisterCommands<Debug>();
       await Client.ConnectAsync();
       await Task.Delay(-1);
     }

@@ -343,3 +343,6 @@ bin/
 .vscode/
 Developer/
 .vs/ProvidenceBot/v16/.suo
+obj/Debug/netcoreapp3.1/ProvidenceBot.assets.cache
+obj/Debug/netcoreapp3.1/ProvidenceBot.assets.cache
+obj/Debug/netcoreapp3.1/ProvidenceBot.csprojAssemblyReference.cache

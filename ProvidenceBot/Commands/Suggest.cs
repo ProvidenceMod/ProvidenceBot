@@ -19,9 +19,9 @@ namespace ProvidenceBot.Commands
     {
       DiscordColor color = new DiscordColor("651f33"); // Embed Color
 
-      //DiscordEmoji starEmoji = DiscordEmoji.FromName(context.Client, ":star:");
-      //DiscordEmoji checkEmoji = DiscordEmoji.FromGuildEmote(context.Client, 841964605445898261);
-      //DiscordEmoji crossEmoji = DiscordEmoji.FromGuildEmote(context.Client, 841964658743312394);
+      DiscordEmoji starEmoji = DiscordEmoji.FromName(context.Client, ":star:");
+      DiscordEmoji checkEmoji = DiscordEmoji.FromGuildEmote(context.Client, 785370805093269514);
+      DiscordEmoji crossEmoji = DiscordEmoji.FromGuildEmote(context.Client, 801764305464852481);
 
       if (context.Channel.Name != "suggestions") // Make sure this is the right channel
       {
@@ -91,6 +91,9 @@ namespace ProvidenceBot.Commands
               await guiDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
               DiscordMessage finalGUIResult = await context.Channel.SendMessageAsync($"{guiNameMessage.Content} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{guiDescriptionMessage.Content}").ConfigureAwait(false);
+              await finalGUIResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+              await finalGUIResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+              await finalGUIResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               break;
             case 2: // If it's a Feature
               suggestionBuilder.ClearFields();
@@ -147,6 +150,9 @@ namespace ProvidenceBot.Commands
                 await featureDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
 
                 DiscordMessage finalFeatureResult = await context.Channel.SendMessageAsync($"{featureNameMessage.Content} | {featureCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{featureDescriptionMessage.Content}").ConfigureAwait(false);
+                await finalFeatureResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                await finalFeatureResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                await finalFeatureResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               }
               break;
             case 3: // If it's an Entity
@@ -349,9 +355,9 @@ namespace ProvidenceBot.Commands
 
                               DiscordMessage finalAccessoryResult = await context.Channel.SendMessageAsync($"{accessoryNameMessage.Content} | {accessoryClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{accessoryDescriptionMessage.Content}").ConfigureAwait(false);
 
-                              // await finalResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              // await finalResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              // await finalResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              await finalAccessoryResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              await finalAccessoryResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              await finalAccessoryResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
 
@@ -375,7 +381,10 @@ namespace ProvidenceBot.Commands
                             await ammoDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                             await ammoDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                            DiscordMessage finalResult = await context.Channel.SendMessageAsync($"{ammoNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{ammoDescriptionMessage.Content}").ConfigureAwait(false);
+                            DiscordMessage finalAmmoResult = await context.Channel.SendMessageAsync($"{ammoNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{ammoDescriptionMessage.Content}").ConfigureAwait(false);
+                            await finalAmmoResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                            await finalAmmoResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                            await finalAmmoResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
                           case 3: // Armor
 
@@ -437,6 +446,9 @@ namespace ProvidenceBot.Commands
                               await armorDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                               DiscordMessage finalArmorResult = await context.Channel.SendMessageAsync($"{armorNameMessage.Content} | {armorClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{armorDescriptionMessage.Content}").ConfigureAwait(false);
+                              await finalArmorResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              await finalArmorResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              await finalArmorResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case 4: // Consumable
@@ -496,6 +508,9 @@ namespace ProvidenceBot.Commands
                               await consumableDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                               DiscordMessage finalConsumableResult = await context.Channel.SendMessageAsync($"{consumableNameMessage.Content} | {consumableReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{consumableDescriptionMessage.Content}").ConfigureAwait(false);
+                              await finalConsumableResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              await finalConsumableResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              await finalConsumableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case 5: // Material
@@ -519,6 +534,9 @@ namespace ProvidenceBot.Commands
                             await materialDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                             DiscordMessage finalMaterialResult = await context.Channel.SendMessageAsync($"{materialNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{materialDescriptionMessage.Content}").ConfigureAwait(false);
+                            await finalMaterialResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                            await finalMaterialResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                            await finalMaterialResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
                           case 6: // Placeable
 
@@ -573,6 +591,9 @@ namespace ProvidenceBot.Commands
                               await placeableDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                               DiscordMessage finalPlaceableResult = await context.Channel.SendMessageAsync($"{placeableNameMessage.Content} | {placeableReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{placeableDescriptionMessage.Content}").ConfigureAwait(false);
+                              await finalPlaceableResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              await finalPlaceableResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              await finalPlaceableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case 7: // Potions
@@ -596,6 +617,9 @@ namespace ProvidenceBot.Commands
                             await potionDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                             DiscordMessage finalPotionResult = await context.Channel.SendMessageAsync($"{potionNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{potionDescriptionMessage.Content}").ConfigureAwait(false);
+                            await finalPotionResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                            await finalPotionResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                            await finalPotionResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
                           case 8: // Tools 
 
@@ -652,6 +676,9 @@ namespace ProvidenceBot.Commands
                               await toolDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                               DiscordMessage finalToolResult = await context.Channel.SendMessageAsync($"{toolNameMessage.Content} | {toolReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{toolDescriptionMessage.Content}").ConfigureAwait(false);
+                              await finalToolResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              await finalToolResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              await finalToolResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case 9: // Weapon
@@ -712,6 +739,9 @@ namespace ProvidenceBot.Commands
                               await weaponDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                               DiscordMessage finalWeaponResult = await context.Channel.SendMessageAsync($"{weaponNameMessage.Content} | {weaponClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{weaponDescriptionMessage.Content}").ConfigureAwait(false);
+                              await finalWeaponResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              await finalWeaponResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              await finalWeaponResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                         }
@@ -968,7 +998,10 @@ namespace ProvidenceBot.Commands
                           await npcDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                           await npcDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                          DiscordMessage finalWeaponResult = await context.Channel.SendMessageAsync($"{npcNameMessage.Content} | {npcTypeReply} | {npcCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{npcDescriptionMessage.Content}").ConfigureAwait(false);
+                          DiscordMessage finalNPCResult = await context.Channel.SendMessageAsync($"{npcNameMessage.Content} | {npcTypeReply} | {npcCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{npcDescriptionMessage.Content}").ConfigureAwait(false);
+                          await finalNPCResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                          await finalNPCResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                          await finalNPCResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                         }
                       }
                       break;
@@ -1033,6 +1066,9 @@ namespace ProvidenceBot.Commands
                 await mechanicDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                 DiscordMessage finalMechanicResult = await context.Channel.SendMessageAsync($"{mechanicNameMessage.Content} | {mechanicReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{mechanicDescriptionMessage.Content}").ConfigureAwait(false);
+                await finalMechanicResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                await finalMechanicResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                await finalMechanicResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               }
               break;
             case 5: // Worldgen
@@ -1196,7 +1232,10 @@ namespace ProvidenceBot.Commands
                     await worldgenTileDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                     await worldgenTileDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                    DiscordMessage finalWorldgenResult = await context.Channel.SendMessageAsync($"{worldgenTileNameMessage.Content} | {worldgenTileCategoryReply} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{worldgenTileDescriptionMessage.Content}").ConfigureAwait(false);
+                    DiscordMessage finalWorldgenTileResult = await context.Channel.SendMessageAsync($"{worldgenTileNameMessage.Content} | {worldgenTileCategoryReply} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{worldgenTileDescriptionMessage.Content}").ConfigureAwait(false);
+                    await finalWorldgenTileResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                    await finalWorldgenTileResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                    await finalWorldgenTileResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                   }
                 }
                 else
@@ -1218,6 +1257,9 @@ namespace ProvidenceBot.Commands
                   await worldgenDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                   DiscordMessage finalWorldgenResult = await context.Channel.SendMessageAsync($"{worldgenNameMessage.Content} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{worldgenDescriptionMessage.Content}").ConfigureAwait(false);
+                  await finalWorldgenResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                  await finalWorldgenResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                  await finalWorldgenResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                 }
               }
               break;

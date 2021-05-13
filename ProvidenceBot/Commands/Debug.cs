@@ -1,15 +1,11 @@
-﻿using System;
-using DSharpPlus.Entities;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Interactivity.Extensions;
-using DSharpPlus.Interactivity;
+using System.Threading.Tasks;
 
 namespace ProvidenceBot.Commands
 {
   public class Debug : BaseCommandModule
-  { 
+  {
     [Command("debug")]
     [Hidden]
     [Description("Provides various commands for debugging the bot while it's running. Moderator use only!")]
@@ -28,6 +24,7 @@ namespace ProvidenceBot.Commands
           case "status":
             await context.Channel.SendMessageAsync($"Debug mode is currently {(Bot.debugMode ? "ON. Please be careful!" : "OFF.")}");
             break;
+
           default:
             await context.Channel.SendMessageAsync("I didn't understand that, please try again.");
             break;

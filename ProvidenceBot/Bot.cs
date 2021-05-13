@@ -21,14 +21,13 @@ namespace ProvidenceBot
     public CommandsNextExtension Commands { get; private set; }
     public static bool debugMode;
 
-    public async Task RunAsync()
+    public Bot(IServiceProvider services)
     {
       string json = string.Empty;
 
       using (var fs = File.OpenRead("config.json"))
       using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
-        json = await sr.ReadToEndAsync().ConfigureAwait(false);
-
+        json =  sr.ReadToEnd();
       var configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
 
       DiscordConfiguration config = new DiscordConfiguration
@@ -55,14 +54,18 @@ namespace ProvidenceBot
         EnableDms = true,
         EnableMentionPrefix = true,
         DmHelp = true,
+        Services = services,
       };
 
       Commands = Client.UseCommandsNext(commandsConfig);
 
       Commands.RegisterCommands<Suggest>();
       Commands.RegisterCommands<Debug>();
-      await Client.ConnectAsync();
-      await Task.Delay(-1);
+      Client.ConnectAsync();
+    }
+
+    public async Task RunAsync()
+    {
     }
 
     private Task OnClientReady(object sender, ReadyEventArgs e)

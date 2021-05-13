@@ -1,11 +1,14 @@
+using csharpi.Database.Models.items;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace csharpi.Database
 {
-  public partial class CsharpiEntities : DbContext
+  public class CsharpiContext : DbContext
   {
-    public virtual DbSet<Suggestion> Suggestions { get; set; }
+    public DbSet<Item> Items { get; set; }
+
+     public CsharpiContext(DbContextOptions<CsharpiContext> options) : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

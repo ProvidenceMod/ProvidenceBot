@@ -113,7 +113,7 @@ namespace ProvidenceBot.Commands
               await featureCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
               int fResult = int.Parse(featureCategoryMessage.Content);
-              if (fResult != 1 && fResult != 2 && fResult != 3 && fResult != 4 && fResult != 5 && fResult != 6)
+              if (fResult < 1 && fResult > 6) // Outside valid range
               {
                 var task = Task.Run(() => Timeout(context));
                 {
@@ -178,7 +178,7 @@ namespace ProvidenceBot.Commands
               await entityCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
               int eResult = int.Parse(entityCategoryMessage.Content);
-              if (eResult != 1 && eResult != 2 && eResult != 3 && eResult != 4)
+              if (eResult < 1 && eResult > 4)
               {
                 var task = Task.Run(() => Timeout(context));
                 {
@@ -221,7 +221,7 @@ namespace ProvidenceBot.Commands
                 await entityGamestageMessage.DeleteAsync().ConfigureAwait(false);
 
                 int egResult = int.Parse(entityGamestageMessage.Content);
-                if (egResult != 1 && egResult != 2 && egResult != 3 && egResult != 4 && egResult != 5 && egResult != 6 && egResult != 7)
+                if (egResult < 1 && egResult > 7)
                 {
                   var task = Task.Run(() => Timeout(context));
                   {
@@ -270,7 +270,7 @@ namespace ProvidenceBot.Commands
                       await itemCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
                       int icResult = int.Parse(itemCategoryMessage.Content);
-                      if (icResult != 1 && icResult != 2 && icResult != 3 && icResult != 4 && icResult != 5 && icResult != 6 && icResult != 7 && icResult != 8 && icResult != 9)
+                      if (icResult < 1 && icResult > 6)
                       {
                         var task = Task.Run(() => Timeout(context));
                         {

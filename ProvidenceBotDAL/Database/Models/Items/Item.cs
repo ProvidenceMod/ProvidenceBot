@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace csharpi.Database.Models.items
+namespace ProvidenceDAL.Database.Models.items
 {
   public class Item : Entity
   {

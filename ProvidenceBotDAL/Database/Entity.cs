@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ProvidenceDAL.Database
+namespace csharpi.Database
 {
   public abstract class Entity
   {

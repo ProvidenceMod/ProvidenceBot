@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ProvidenceBotDAL.Database;
+using ProvidenceDAL.Database;
 
 namespace ProvidenceBot
 {

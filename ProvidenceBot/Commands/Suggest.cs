@@ -51,8 +51,8 @@ namespace ProvidenceBot.Commands
         // await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
         await mainCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
-        int mResult = int.Parse(mainCategoryMessage.Content);
-        if (mResult != 1 && mResult != 2 && mResult != 3 && mResult != 4 && mResult != 5)
+        string mResult = mainCategoryMessage.Content;
+        if (mResult != "1" && mResult != "2" && mResult != "3" && mResult != "4" && mResult != "5")
         {
           var task = Task.Run(() => Timeout(context));
           {
@@ -65,15 +65,15 @@ namespace ProvidenceBot.Commands
         }
         else
         {
-          string mainCategoryReply = mResult == 1 ? "GUI" :
-                                     mResult == 2 ? "Feature" :
-                                     mResult == 3 ? "Entity" :
-                                     mResult == 4 ? "Mechanic" :
-                                     mResult == 5 ? "Worldgen" :
+          string mainCategoryReply = mResult == "1" ? "GUI" :
+                                     mResult == "2" ? "Feature" :
+                                     mResult == "3" ? "Entity" :
+                                     mResult == "4" ? "Mechanic" :
+                                     mResult == "5" ? "Worldgen" :
                                      "Error: Undefined";
           switch (mResult) // Main Category Result
           {
-            case 1: // If it's a GUI
+            case "1": // If it's a GUI
               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
 
               DiscordMessage guiNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this GUI:").ConfigureAwait(false);
@@ -95,7 +95,7 @@ namespace ProvidenceBot.Commands
               await finalGUIResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
               await finalGUIResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               break;
-            case 2: // If it's a Feature
+            case "2": // If it's a Feature
               suggestionBuilder.ClearFields();
               suggestionBuilder.WithTitle("Please choose the type of feature you will be suggesting:");
               suggestionBuilder.WithColor(color);
@@ -112,8 +112,8 @@ namespace ProvidenceBot.Commands
               DiscordMessage featureCategoryMessage = featureCategoryResponse.Result;
               await featureCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
-              int fResult = int.Parse(featureCategoryMessage.Content);
-              if (fResult != 1 && fResult != 2 && fResult != 3 && fResult != 4 && fResult != 5 && fResult != 6)
+              string fResult = featureCategoryMessage.Content;
+              if (fResult != "1" && fResult != "2" && fResult != "3" && fResult != "4" && fResult != "5" && fResult != "6") // Outside valid range
               {
                 var task = Task.Run(() => Timeout(context));
                 {
@@ -127,22 +127,22 @@ namespace ProvidenceBot.Commands
               else
               {
                 await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                string featureCategoryReply = fResult == 1 ? "Recipe" :
-                                              fResult == 2 ? "Environmental Change" :
-                                              fResult == 3 ? "NPC Change" :
-                                              fResult == 4 ? "Player Change" :
-                                              fResult == 5 ? "Hazard Addition" :
-                                              fResult == 6 ? "Modifier" :
+                string featureCategoryReply = fResult == "1" ? "Recipe" :
+                                              fResult == "2" ? "Environmental Change" :
+                                              fResult == "3" ? "NPC Change" :
+                                              fResult == "4" ? "Player Change" :
+                                              fResult == "5" ? "Hazard Addition" :
+                                              fResult == "6" ? "Modifier" :
                                               "Error: Undefined";
 
-                DiscordMessage featureNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this " + (fResult == 1 ? "recipe:" : fResult == 2 ? "environmental change:" : fResult == 3 ? "NPC change:" : fResult == 4 ? "player change:" : fResult == 5 ? "hazard addition:" : fResult == 6 ? "modifier" : "Error: Undefined")).ConfigureAwait(false);
+                DiscordMessage featureNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this " + (fResult == "1" ? "recipe:" : fResult == "2" ? "environmental change:" : fResult == "3" ? "NPC change:" : fResult == "4" ? "player change:" : fResult == "5" ? "hazard addition:" : fResult == "6" ? "modifier" : "Error: Undefined")).ConfigureAwait(false);
                 InteractivityExtension featureNameInteractivity = context.Client.GetInteractivity();
                 InteractivityResult<DiscordMessage> featureNameResponse = await featureNameInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
                 DiscordMessage featureNameMessage = featureNameResponse.Result;
                 await featureNameMessage.DeleteAsync().ConfigureAwait(false);
                 await featureNameQuestion.DeleteAsync().ConfigureAwait(false);
 
-                DiscordMessage featureDescriptionQuestion = await context.Channel.SendMessageAsync("Please provide a clear and concise description of this " + (fResult == 1 ? "recipe:" : fResult == 2 ? "environmental change:" : fResult == 3 ? "NPC change:" : fResult == 4 ? "player change:" : fResult == 5 ? "hazard addition:" : fResult == 6 ? "modifier" : "Error: Undefined")).ConfigureAwait(false);
+                DiscordMessage featureDescriptionQuestion = await context.Channel.SendMessageAsync("Please provide a clear and concise description of this " + (fResult == "1" ? "recipe:" : fResult == "2" ? "environmental change:" : fResult == "3" ? "NPC change:" : fResult == "4" ? "player change:" : fResult == "5" ? "hazard addition:" : fResult == "6" ? "modifier" : "Error: Undefined")).ConfigureAwait(false);
                 InteractivityExtension featureDescriptionInteractivity = context.Client.GetInteractivity();
                 InteractivityResult<DiscordMessage> featureDescriptionResponse = await featureDescriptionInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
                 DiscordMessage featureDescriptionMessage = featureDescriptionResponse.Result;
@@ -155,7 +155,7 @@ namespace ProvidenceBot.Commands
                 await finalFeatureResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               }
               break;
-            case 3: // If it's an Entity
+            case "3": // If it's an Entity
 
               //-----ENTITY CATEGORY-----//
 
@@ -177,8 +177,8 @@ namespace ProvidenceBot.Commands
               // await entityCategoryQuestion.DeleteAsync().ConfigureAwait(false);
               await entityCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
-              int eResult = int.Parse(entityCategoryMessage.Content);
-              if (eResult != 1 && eResult != 2 && eResult != 3 && eResult != 4)
+              string eResult = entityCategoryMessage.Content;
+              if (eResult != "1" && eResult != "2" && eResult != "3" && eResult != "4" && eResult != "5")
               {
                 var task = Task.Run(() => Timeout(context));
                 {
@@ -191,11 +191,11 @@ namespace ProvidenceBot.Commands
               }
               else
               {
-                string entityCategoryReply = eResult == 1 ? "Item" :
-                                             eResult == 2 ? "NPC" :
-                                             eResult == 3 ? "Projectile" :
-                                             eResult == 4 ? "Tile" :
-                                             eResult == 5 ? "Dust" :
+                string entityCategoryReply = eResult == "1" ? "Item" :
+                                             eResult == "2" ? "NPC" :
+                                             eResult == "3" ? "Projectile" :
+                                             eResult == "4" ? "Tile" :
+                                             eResult == "5" ? "Dust" :
                                              "Error: Undefined";
 
                 //-----GAMESTAGE-----//
@@ -220,8 +220,8 @@ namespace ProvidenceBot.Commands
                 // await entityGamestageQuestion.DeleteAsync().ConfigureAwait(false);
                 await entityGamestageMessage.DeleteAsync().ConfigureAwait(false);
 
-                int egResult = int.Parse(entityGamestageMessage.Content);
-                if (egResult != 1 && egResult != 2 && egResult != 3 && egResult != 4 && egResult != 5 && egResult != 6 && egResult != 7)
+                string egResult = entityGamestageMessage.Content;
+                if (egResult != "1" && egResult != "2" && egResult != "3" && egResult != "4" && egResult != "5" && egResult != "6" && egResult != "7")
                 {
                   var task = Task.Run(() => Timeout(context));
                   {
@@ -234,17 +234,17 @@ namespace ProvidenceBot.Commands
                 }
                 else
                 {
-                  string entityGamestageReply = egResult == 1 ? "Pre-bosses" :
-                                                egResult == 2 ? "Pre-Hardmode" :
-                                                egResult == 3 ? "Pre-mechanical bosses" :
-                                                egResult == 4 ? "Pre-Plantera" :
-                                                egResult == 5 ? "Pre-Golem" :
-                                                egResult == 6 ? "Pre-Lunar Events" :
-                                                egResult == 7 ? "Post-Moonlord" :
+                  string entityGamestageReply = egResult == "1" ? "Pre-bosses" :
+                                                egResult == "2" ? "Pre-Hardmode" :
+                                                egResult == "3" ? "Pre-mechanical bosses" :
+                                                egResult == "4" ? "Pre-Plantera" :
+                                                egResult == "5" ? "Pre-Golem" :
+                                                egResult == "6" ? "Pre-Lunar Events" :
+                                                egResult == "7" ? "Post-Moonlord" :
                                                 "Error: Undefined";
                   switch (eResult) // Entity Type Result
                   {
-                    case 1:
+                    case "1":
                       //-----ITEM CATEGORY-----//
 
                       // DiscordEmbedBuilder itemCategoryBuilder = new DiscordEmbedBuilder();
@@ -269,8 +269,8 @@ namespace ProvidenceBot.Commands
                       // await itemCategoryQuestion.DeleteAsync().ConfigureAwait(false);
                       await itemCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
-                      int icResult = int.Parse(itemCategoryMessage.Content);
-                      if (icResult != 1 && icResult != 2 && icResult != 3 && icResult != 4 && icResult != 5 && icResult != 6 && icResult != 7 && icResult != 8 && icResult != 9)
+                      string icResult = itemCategoryMessage.Content;
+                      if (icResult != "1" && icResult != "2" && icResult != "3" && icResult != "4" && icResult != "5" && icResult != "6" && icResult != "7" && icResult != "8" && icResult != "9")
                       {
                         var task = Task.Run(() => Timeout(context));
                         {
@@ -283,19 +283,19 @@ namespace ProvidenceBot.Commands
                       }
                       else
                       {
-                        string itemCategoryReply = icResult == 1 ? "Accessory" :
-                                                   icResult == 2 ? "Ammo" :
-                                                   icResult == 3 ? "Armor" :
-                                                   icResult == 4 ? "Consumable" :
-                                                   icResult == 5 ? "Material" :
-                                                   icResult == 6 ? "Placeable" :
-                                                   icResult == 7 ? "Potion" :
-                                                   icResult == 8 ? "Tool" :
-                                                   icResult == 9 ? "Weapon" :
+                        string itemCategoryReply = icResult == "1" ? "Accessory" :
+                                                   icResult == "2" ? "Ammo" :
+                                                   icResult == "3" ? "Armor" :
+                                                   icResult == "4" ? "Consumable" :
+                                                   icResult == "5" ? "Material" :
+                                                   icResult == "6" ? "Placeable" :
+                                                   icResult == "7" ? "Potion" :
+                                                   icResult == "8" ? "Tool" :
+                                                   icResult == "9" ? "Weapon" :
                                                    "Error: Undefined";
                         switch (icResult) // Item Category Result
                         {
-                          case 1: // Accessory
+                          case "1": // Accessory
 
                             //-----ACCESSORY CATEGORY-----//
 
@@ -316,8 +316,8 @@ namespace ProvidenceBot.Commands
                             DiscordMessage accessoryClassMessage = accessoryClassResponse.Result;
                             await accessoryClassMessage.DeleteAsync().ConfigureAwait(false);
 
-                            int acResult = int.Parse(accessoryClassMessage.Content);
-                            if (acResult != 1 && acResult != 2 && acResult != 3 && acResult != 4 && acResult != 5 && acResult != 6)
+                            string acResult = accessoryClassMessage.Content;
+                            if (acResult != "1" && acResult != "2" && acResult != "3" && acResult != "4" && acResult != "5" && acResult != "6")
                             {
                               var task = Task.Run(() => Timeout(context));
                               {
@@ -331,12 +331,12 @@ namespace ProvidenceBot.Commands
                             else
                             {
                               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                              string accessoryClassReply = acResult == 1 ? "Melee" :
-                                                           acResult == 2 ? "Ranged" :
-                                                           acResult == 3 ? "Magic" :
-                                                           acResult == 4 ? "Summoner" :
-                                                           acResult == 5 ? "Cleric" :
-                                                           acResult == 6 ? "General" :
+                              string accessoryClassReply = acResult == "1" ? "Melee" :
+                                                           acResult == "2" ? "Ranged" :
+                                                           acResult == "3" ? "Magic" :
+                                                           acResult == "4" ? "Summoner" :
+                                                           acResult == "5" ? "Cleric" :
+                                                           acResult == "6" ? "General" :
                                                            "Error: Undefined";
 
                               DiscordMessage accessoryNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this accessory:").ConfigureAwait(false);
@@ -361,7 +361,7 @@ namespace ProvidenceBot.Commands
                             }
                             break;
 
-                          case 2: // Ammo
+                          case "2": // Ammo
 
                             //-----AMMO CATEGORY-----//
 
@@ -386,7 +386,7 @@ namespace ProvidenceBot.Commands
                             await finalAmmoResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
                             await finalAmmoResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
-                          case 3: // Armor
+                          case "3": // Armor
 
                             //-----ARMOR CATEGORY-----//
 
@@ -408,8 +408,8 @@ namespace ProvidenceBot.Commands
                             // await accessoryClassQuestion.DeleteAsync().ConfigureAwait(false);
                             await armorClassMessage.DeleteAsync().ConfigureAwait(false);
 
-                            int arResult = int.Parse(armorClassMessage.Content);
-                            if (arResult != 1 && arResult != 2 && arResult != 3 && arResult != 4 && arResult != 5 && arResult != 6)
+                            string arResult = armorClassMessage.Content;
+                            if (arResult != "1" && arResult != "2" && arResult != "3" && arResult != "4" && arResult != "5" && arResult != "6")
                             {
                               var task = Task.Run(() => Timeout(context));
                               {
@@ -423,12 +423,12 @@ namespace ProvidenceBot.Commands
                             else
                             {
                               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                              string armorClassReply = arResult == 1 ? "Melee" :
-                                                       arResult == 2 ? "Ranged" :
-                                                       arResult == 3 ? "Magic" :
-                                                       arResult == 4 ? "Summoner" :
-                                                       arResult == 5 ? "Cleric" :
-                                                       arResult == 6 ? "General" :
+                              string armorClassReply = arResult == "1" ? "Melee" :
+                                                       arResult == "2" ? "Ranged" :
+                                                       arResult == "3" ? "Magic" :
+                                                       arResult == "4" ? "Summoner" :
+                                                       arResult == "5" ? "Cleric" :
+                                                       arResult == "6" ? "General" :
                                                        "Error: Undefined";
 
                               DiscordMessage armorNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this armor:").ConfigureAwait(false);
@@ -451,7 +451,7 @@ namespace ProvidenceBot.Commands
                               await finalArmorResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
-                          case 4: // Consumable
+                          case "4": // Consumable
 
                             //-----CONSUMABLE CATEGORY-----//
 
@@ -471,8 +471,8 @@ namespace ProvidenceBot.Commands
 
                             await consumableMessage.DeleteAsync().ConfigureAwait(false);
 
-                            int conResult = int.Parse(consumableMessage.Content);
-                            if (conResult != 1 && conResult != 2 && conResult != 3 && conResult != 4 && conResult != 5)
+                            string conResult = consumableMessage.Content;
+                            if (conResult != "1" && conResult != "2" && conResult != "3" && conResult != "4" && conResult != "5")
                             {
                               var task = Task.Run(() => Timeout(context));
                               {
@@ -486,11 +486,11 @@ namespace ProvidenceBot.Commands
                             else
                             {
                               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                              string consumableReply = conResult == 1 ? "Permanent Health Upgrade" :
-                                                       conResult == 2 ? "Permanent Mana Upgrade" :
-                                                       conResult == 3 ? "Permanent Parity Upgrade" :
-                                                       conResult == 4 ? "Spawner" :
-                                                       conResult == 5 ? "Dropped Consumable" :
+                              string consumableReply = conResult == "1" ? "Permanent Health Upgrade" :
+                                                       conResult == "2" ? "Permanent Mana Upgrade" :
+                                                       conResult == "3" ? "Permanent Parity Upgrade" :
+                                                       conResult == "4" ? "Spawner" :
+                                                       conResult == "5" ? "Dropped Consumable" :
                                                            "Error: Undefined";
 
                               DiscordMessage consumableNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this consumable:").ConfigureAwait(false);
@@ -513,7 +513,7 @@ namespace ProvidenceBot.Commands
                               await finalConsumableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
-                          case 5: // Material
+                          case "5": // Material
 
                             //-----MATERIAL CATEGORY-----//
 
@@ -538,7 +538,7 @@ namespace ProvidenceBot.Commands
                             await finalMaterialResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
                             await finalMaterialResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
-                          case 6: // Placeable
+                          case "6": // Placeable
 
                             //-----PLACEABLE CATEGORY-----//
 
@@ -556,8 +556,8 @@ namespace ProvidenceBot.Commands
 
                             await placeableMessage.DeleteAsync().ConfigureAwait(false);
 
-                            int plResult = int.Parse(placeableMessage.Content);
-                            if (plResult != 1 && plResult != 2 && plResult != 3 && plResult != 4 && plResult != 5)
+                            string plResult = placeableMessage.Content;
+                            if (plResult != "1" && plResult != "2" && plResult != "3" && plResult != "4" && plResult != "5")
                             {
                               var task = Task.Run(() => Timeout(context));
                               {
@@ -571,9 +571,9 @@ namespace ProvidenceBot.Commands
                             else
                             {
                               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                              string placeableReply = plResult == 1 ? "Decoration" :
-                                                      plResult == 2 ? "Lighting" :
-                                                      plResult == 3 ? "Utility" :
+                              string placeableReply = plResult == "1" ? "Decoration" :
+                                                      plResult == "2" ? "Lighting" :
+                                                      plResult == "3" ? "Utility" :
                                                       "Error: Undefined";
 
                               DiscordMessage placeableNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this placeable:").ConfigureAwait(false);
@@ -596,7 +596,7 @@ namespace ProvidenceBot.Commands
                               await finalPlaceableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
-                          case 7: // Potions
+                          case "7": // Potions
 
                             //-----POTIONS CATEGORY-----//
 
@@ -621,7 +621,7 @@ namespace ProvidenceBot.Commands
                             await finalPotionResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
                             await finalPotionResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
-                          case 8: // Tools 
+                          case "8": // Tools 
 
                             //-----TOOLS CATEGORY------//
 
@@ -640,8 +640,8 @@ namespace ProvidenceBot.Commands
 
                             await toolMessage.DeleteAsync().ConfigureAwait(false);
 
-                            int tResult = int.Parse(toolMessage.Content);
-                            if (tResult != 1 && tResult != 2 && tResult != 3 && tResult != 4 && tResult != 5)
+                            string tResult = toolMessage.Content;
+                            if (tResult != "1" && tResult != "2" && tResult != "3" && tResult != "4")
                             {
                               var task = Task.Run(() => Timeout(context));
                               {
@@ -655,10 +655,10 @@ namespace ProvidenceBot.Commands
                             else
                             {
                               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                              string toolReply = tResult == 1 ? "Pickaxe" :
-                                                 tResult == 2 ? "Axe" :
-                                                 tResult == 3 ? "Pickaxe Axe" :
-                                                 tResult == 4 ? "Hammer" :
+                              string toolReply = tResult == "1" ? "Pickaxe" :
+                                                 tResult == "2" ? "Axe" :
+                                                 tResult == "3" ? "Pickaxe Axe" :
+                                                 tResult == "4" ? "Hammer" :
                                                  "Error: Undefined";
 
                               DiscordMessage toolNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this tool:").ConfigureAwait(false);
@@ -681,7 +681,7 @@ namespace ProvidenceBot.Commands
                               await finalToolResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
-                          case 9: // Weapon
+                          case "9": // Weapon
 
                             //-----WEAPON CATEGORY-----//
 
@@ -701,8 +701,8 @@ namespace ProvidenceBot.Commands
                             DiscordMessage weaponClassMessage = weaponClassResponse.Result;
                             await weaponClassMessage.DeleteAsync().ConfigureAwait(false);
 
-                            int wResult = int.Parse(weaponClassMessage.Content);
-                            if (wResult != 1 && wResult != 2 && wResult != 3 && wResult != 4 && wResult != 5 && wResult != 6)
+                            string wResult = weaponClassMessage.Content;
+                            if (wResult != "1" && wResult != "2" && wResult != "3" && wResult != "4" && wResult != "5" && wResult != "6")
                             {
                               var task = Task.Run(() => Timeout(context));
                               {
@@ -716,12 +716,12 @@ namespace ProvidenceBot.Commands
                             else
                             {
                               await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                              string weaponClassReply = wResult == 1 ? "Melee" :
-                                                        wResult == 2 ? "Ranged" :
-                                                        wResult == 3 ? "Magic" :
-                                                        wResult == 4 ? "Summoner" :
-                                                        wResult == 5 ? "Cleric" :
-                                                        wResult == 6 ? "Typeless" :
+                              string weaponClassReply = wResult == "1" ? "Melee" :
+                                                        wResult == "2" ? "Ranged" :
+                                                        wResult == "3" ? "Magic" :
+                                                        wResult == "4" ? "Summoner" :
+                                                        wResult == "5" ? "Cleric" :
+                                                        wResult == "6" ? "Typeless" :
                                                         "Error: Undefined";
 
                               DiscordMessage weaponNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this weapon:").ConfigureAwait(false);
@@ -747,13 +747,13 @@ namespace ProvidenceBot.Commands
                         }
                       }
                       break;
-                    case 2: // NPC
+                    case "2": // NPC
 
                       //-----NPC CATEGORY-----//
 
                       DiscordEmbedBuilder suggestionBuilder2 = new DiscordEmbedBuilder();
                       DiscordMessage mainCategoryQuestion2 = null;
-                      if (egResult < 3)
+                      if (egResult == "1" || egResult == "2")
                       {
                         suggestionBuilder.ClearFields();
                         suggestionBuilder.WithTitle("Please choose the biome that this NPC will spawn in:");
@@ -784,7 +784,7 @@ namespace ProvidenceBot.Commands
                         suggestionBuilder.AddField("24. Spider Cave", "A terrifying cavern of webs and eight-legged beasts", true);
                         await mainCategoryQuestion.ModifyAsync(msg => msg.Embed = suggestionBuilder.Build()).ConfigureAwait(false);
                       }
-                      else if (egResult >= 3 && egResult <= 6)
+                      else if (egResult == "3" || egResult == "4" || egResult == "5" || egResult == "6")
                       {
                         suggestionBuilder.ClearFields();
                         suggestionBuilder.WithTitle("Please choose the biome that this NPC will spawn in:");
@@ -830,7 +830,7 @@ namespace ProvidenceBot.Commands
                         await mainCategoryQuestion.ModifyAsync(msg => msg.Embed = suggestionBuilder.Build()).ConfigureAwait(false);
                         mainCategoryQuestion2 = await context.Channel.SendMessageAsync(suggestionBuilder2.Build()).ConfigureAwait(false);
                       }
-                      else if (egResult == 7)
+                      else if (egResult == "7")
                       {
                         suggestionBuilder.ClearFields();
                         suggestionBuilder.WithTitle("Please choose the biome that this NPC will spawn in:");
@@ -888,11 +888,11 @@ namespace ProvidenceBot.Commands
                         await mainCategoryQuestion2.DeleteAsync().ConfigureAwait(false);
                       }
 
-                      int nResult = int.Parse(npcCategoryMessage.Content);
-                      if (nResult != 1 && nResult != 2 && nResult != 3 && nResult != 4 && nResult != 5 && nResult != 6 && nResult != 7 && nResult != 8 && nResult != 9 && nResult != 10
-                       && nResult != 11 && nResult != 12 && nResult != 13 && nResult != 14 && nResult != 15 && nResult != 16 && nResult != 17 && nResult != 18 && nResult != 19 && nResult != 20
-                       && nResult != 21 && nResult != 22 && nResult != 23 && nResult != 24 && nResult != 25 && nResult != 26 && nResult != 27 && nResult != 28 && nResult != 29 && nResult != 30
-                       && nResult != 31 && nResult != 32 && nResult != 33 && nResult != 34 && nResult != 35 && nResult != 36)
+                      string nResult = npcCategoryMessage.Content;
+                      if (nResult != "1" && nResult != "2" && nResult != "3" && nResult != "4" && nResult != "5" && nResult != "6" && nResult != "7" && nResult != "8" && nResult != "9" && nResult != "10"
+                       && nResult != "11" && nResult != "12" && nResult != "13" && nResult != "14" && nResult != "15" && nResult != "16" && nResult != "17" && nResult != "18" && nResult != "19" && nResult != "20"
+                       && nResult != "21" && nResult != "22" && nResult != "23" && nResult != "24" && nResult != "25" && nResult != "26" && nResult != "27" && nResult != "28" && nResult != "29" && nResult != "30"
+                       && nResult != "31" && nResult != "32" && nResult != "33" && nResult != "34" && nResult != "35" && nResult != "36")
                       {
                         var task = Task.Run(() => Timeout(context));
                         {
@@ -905,42 +905,42 @@ namespace ProvidenceBot.Commands
                       }
                       else
                       {
-                        string npcCategoryReply = nResult == 1 ? "Surface" :
-                                                  nResult == 2 ? "Underground" :
-                                                  nResult == 3 ? "Purity" :
-                                                  nResult == 4 ? "Snow" :
-                                                  nResult == 5 ? "Desert" :
-                                                  nResult == 6 ? "Corruption" :
-                                                  nResult == 7 ? "Crimson" :
-                                                  nResult == 8 ? "Jungle" :
-                                                  nResult == 9 ? "Dungeon" :
-                                                  nResult == 10 ? "Ocean" :
-                                                  nResult == 11 ? "Mushroom" :
-                                                  nResult == 12 ? "Cavern" :
-                                                  nResult == 13 ? "Underground Desert" :
-                                                  nResult == 14 ? "Underground Jungle" :
-                                                  nResult == 15 ? "Underground Mushroom" :
-                                                  nResult == 16 ? "Ice Biome" :
-                                                  nResult == 17 ? "Glowing Moss Biome" :
-                                                  nResult == 18 ? "Underworld" :
-                                                  nResult == 19 ? "The Hallow" :
-                                                  nResult == 20 ? "Underground Hallow" :
-                                                  nResult == 21 ? "Underground Corruption" :
-                                                  nResult == 22 ? "Underground Crimson" :
-                                                  nResult == 23 ? "Corrupted Desert" :
-                                                  nResult == 24 ? "Crimson Desert" :
-                                                  nResult == 25 ? "Hallow Desert" :
-                                                  nResult == 26 ? "Granite Cave" :
-                                                  nResult == 27 ? "Marble Cave" :
-                                                  nResult == 28 ? "Graveyard" :
-                                                  nResult == 29 ? "Oasis" :
-                                                  nResult == 30 ? "Jungle Temple" :
-                                                  nResult == 31 ? "Meteorite" :
-                                                  nResult == 32 ? "Spider Cave" :
-                                                  nResult == 33 ? "Endless Sea" :
-                                                  nResult == 34 ? "Forgotten Depths" :
-                                                  nResult == 35 ? "Luna" :
-                                                  nResult == 36 ? "Ruins of Luna" :
+                        string npcCategoryReply = nResult == "1" ? "Surface" :
+                                                  nResult == "2" ? "Underground" :
+                                                  nResult == "3" ? "Purity" :
+                                                  nResult == "4" ? "Snow" :
+                                                  nResult == "5" ? "Desert" :
+                                                  nResult == "6" ? "Corruption" :
+                                                  nResult == "7" ? "Crimson" :
+                                                  nResult == "8" ? "Jungle" :
+                                                  nResult == "9" ? "Dungeon" :
+                                                  nResult == "10" ? "Ocean" :
+                                                  nResult == "11" ? "Mushroom" :
+                                                  nResult == "12" ? "Cavern" :
+                                                  nResult == "13" ? "Underground Desert" :
+                                                  nResult == "14" ? "Underground Jungle" :
+                                                  nResult == "15" ? "Underground Mushroom" :
+                                                  nResult == "16" ? "Ice Biome" :
+                                                  nResult == "17" ? "Glowing Moss Biome" :
+                                                  nResult == "18" ? "Underworld" :
+                                                  nResult == "19" ? "The Hallow" :
+                                                  nResult == "20" ? "Underground Hallow" :
+                                                  nResult == "21" ? "Underground Corruption" :
+                                                  nResult == "22" ? "Underground Crimson" :
+                                                  nResult == "23" ? "Corrupted Desert" :
+                                                  nResult == "24" ? "Crimson Desert" :
+                                                  nResult == "25" ? "Hallow Desert" :
+                                                  nResult == "26" ? "Granite Cave" :
+                                                  nResult == "27" ? "Marble Cave" :
+                                                  nResult == "28" ? "Graveyard" :
+                                                  nResult == "29" ? "Oasis" :
+                                                  nResult == "30" ? "Jungle Temple" :
+                                                  nResult == "31" ? "Meteorite" :
+                                                  nResult == "32" ? "Spider Cave" :
+                                                  nResult == "33" ? "Endless Sea" :
+                                                  nResult == "34" ? "Forgotten Depths" :
+                                                  nResult == "35" ? "Luna" :
+                                                  nResult == "36" ? "Ruins of Luna" :
                                                   "Error: Undefined";
 
                         //-----TYPE-----//
@@ -962,8 +962,8 @@ namespace ProvidenceBot.Commands
 
                         await npcTypeMessage.DeleteAsync().ConfigureAwait(false);
 
-                        int ntResult = int.Parse(npcTypeMessage.Content);
-                        if (ntResult != 1 && ntResult != 2 && ntResult != 3 && ntResult != 4 && ntResult != 5 && ntResult != 6)
+                        string ntResult = npcTypeMessage.Content;
+                        if (ntResult != "1" && ntResult != "2" && ntResult != "3" && ntResult != "4" && ntResult != "5" && ntResult != "6")
                         {
                           var task = Task.Run(() => Timeout(context));
                           {
@@ -977,12 +977,12 @@ namespace ProvidenceBot.Commands
                         else
                         {
                           await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                          string npcTypeReply = ntResult == 1 ? "Critter" :
-                                                ntResult == 2 ? "Town" :
-                                                ntResult == 3 ? "Enemy" :
-                                                ntResult == 4 ? "Miniboss" :
-                                                ntResult == 5 ? "Boss" :
-                                                ntResult == 6 ? "Environmental" :
+                          string npcTypeReply = ntResult == "1" ? "Critter" :
+                                                ntResult == "2" ? "Town" :
+                                                ntResult == "3" ? "Enemy" :
+                                                ntResult == "4" ? "Miniboss" :
+                                                ntResult == "5" ? "Boss" :
+                                                ntResult == "6" ? "Environmental" :
                                                 "Error: Undefined";
                           DiscordMessage npcNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this NPC:").ConfigureAwait(false);
                           InteractivityExtension npcNameInteractivity = context.Client.GetInteractivity();
@@ -1015,7 +1015,7 @@ namespace ProvidenceBot.Commands
                 }
               }
               break;
-            case 4: // Mechanic
+            case "4": // Mechanic
 
               //-----MECHANIC CATEGORY-----//
 
@@ -1032,8 +1032,8 @@ namespace ProvidenceBot.Commands
 
               await mechanicMessage.DeleteAsync().ConfigureAwait(false);
 
-              int mechResult = int.Parse(mechanicMessage.Content);
-              if (mechResult != 1 && mechResult != 2)
+              string mechResult = mechanicMessage.Content;
+              if (mechResult != "1" && mechResult != "2")
               {
                 var task = Task.Run(() => Timeout(context));
                 {
@@ -1047,8 +1047,8 @@ namespace ProvidenceBot.Commands
               else
               {
                 await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
-                string mechanicReply = mechResult == 1 ? "Combat" :
-                                       mechResult == 2 ? "Convenience" :
+                string mechanicReply = mechResult == "1" ? "Combat" :
+                                       mechResult == "2" ? "Convenience" :
                                        "Error: Undefined";
 
                 DiscordMessage mechanicNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this mechanic:").ConfigureAwait(false);
@@ -1071,7 +1071,7 @@ namespace ProvidenceBot.Commands
                 await finalMechanicResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               }
               break;
-            case 5: // Worldgen
+            case "5": // Worldgen
 
               //-----WORLDGEN CATEGORY-----//
 
@@ -1090,8 +1090,8 @@ namespace ProvidenceBot.Commands
 
               await worldgenMessage.DeleteAsync().ConfigureAwait(false);
 
-              int worResult = int.Parse(worldgenMessage.Content);
-              if (worResult != 1 && worResult != 2 && worResult != 3 && worResult != 4)
+              string worResult = worldgenMessage.Content;
+              if (worResult != "1" && worResult != "2" && worResult != "3" && worResult != "4")
               {
                 var task = Task.Run(() => Timeout(context));
                 {
@@ -1104,13 +1104,13 @@ namespace ProvidenceBot.Commands
               }
               else
               {
-                string worldgenReply = worResult == 1 ? "Addition" :
-                                       worResult == 2 ? "Modification" :
-                                       worResult == 3 ? "Subtraction" :
-                                       worResult == 4 ? "Tile" :
+                string worldgenReply = worResult == "1" ? "Addition" :
+                                       worResult == "2" ? "Modification" :
+                                       worResult == "3" ? "Subtraction" :
+                                       worResult == "4" ? "Tile" :
                                        "Error: Undefined";
 
-                if (worResult == 4)
+                if (worResult == "4")
                 {
                   suggestionBuilder.ClearFields();
                   suggestionBuilder.WithTitle("Please choose the biome that this tile will spawn in:");
@@ -1161,11 +1161,11 @@ namespace ProvidenceBot.Commands
                   DiscordMessage worldgenTileCategoryMessage = worldgenTileCategoryResponse.Result;
                   await worldgenTileCategoryMessage.DeleteAsync().ConfigureAwait(false);
 
-                  int wtResult = int.Parse(worldgenTileCategoryMessage.Content);
-                  if (wtResult != 1 && wtResult != 2 && wtResult != 3 && wtResult != 4 && wtResult != 5 && wtResult != 6 && wtResult != 7 && wtResult != 8 && wtResult != 9 && wtResult != 10
-                   && wtResult != 11 && wtResult != 12 && wtResult != 13 && wtResult != 14 && wtResult != 15 && wtResult != 16 && wtResult != 17 && wtResult != 18 && wtResult != 19 && wtResult != 20
-                   && wtResult != 21 && wtResult != 22 && wtResult != 23 && wtResult != 24 && wtResult != 25 && wtResult != 26 && wtResult != 27 && wtResult != 28 && wtResult != 29 && wtResult != 30
-                   && wtResult != 31 && wtResult != 32 && wtResult != 33 && wtResult != 34 && wtResult != 35 && wtResult != 36)
+                  string wtResult = worldgenTileCategoryMessage.Content;
+                  if (wtResult != "1" && wtResult != "2" && wtResult != "3" && wtResult != "4" && wtResult != "5" && wtResult != "6" && wtResult != "7" && wtResult != "8" && wtResult != "9" && wtResult != "10"
+                   && wtResult != "11" && wtResult != "12" && wtResult != "13" && wtResult != "14" && wtResult != "15" && wtResult != "16" && wtResult != "17" && wtResult != "18" && wtResult != "19" && wtResult != "20"
+                   && wtResult != "21" && wtResult != "22" && wtResult != "23" && wtResult != "24" && wtResult != "25" && wtResult != "26" && wtResult != "27" && wtResult != "28" && wtResult != "29" && wtResult != "30"
+                   && wtResult != "31" && wtResult != "32" && wtResult != "33" && wtResult != "34" && wtResult != "35" && wtResult != "36")
                   {
                     var task = Task.Run(() => Timeout(context));
                     {
@@ -1181,42 +1181,42 @@ namespace ProvidenceBot.Commands
                     await mainCategoryQuestion.DeleteAsync().ConfigureAwait(false);
                     await mainCategoryQuestion2.DeleteAsync().ConfigureAwait(false);
 
-                    string worldgenTileCategoryReply = wtResult == 1 ? "Surface" :
-                                                   wtResult == 2 ? "Underground" :
-                                                   wtResult == 3 ? "Purity" :
-                                                   wtResult == 4 ? "Snow" :
-                                                   wtResult == 5 ? "Desert" :
-                                                   wtResult == 6 ? "Corruption" :
-                                                   wtResult == 7 ? "Crimson" :
-                                                   wtResult == 8 ? "Jungle" :
-                                                   wtResult == 9 ? "Dungeon" :
-                                                   wtResult == 10 ? "Ocean" :
-                                                   wtResult == 11 ? "Mushroom" :
-                                                   wtResult == 12 ? "Cavern" :
-                                                   wtResult == 13 ? "Underground Desert" :
-                                                   wtResult == 14 ? "Underground Jungle" :
-                                                   wtResult == 15 ? "Underground Mushroom" :
-                                                   wtResult == 16 ? "Ice Biome" :
-                                                   wtResult == 17 ? "Glowing Moss Biome" :
-                                                   wtResult == 18 ? "Underworld" :
-                                                   wtResult == 19 ? "The Hallow" :
-                                                   wtResult == 20 ? "Underground Hallow" :
-                                                   wtResult == 21 ? "Underground Corruption" :
-                                                   wtResult == 22 ? "Underground Crimson" :
-                                                   wtResult == 23 ? "Corrupted Desert" :
-                                                   wtResult == 24 ? "Crimson Desert" :
-                                                   wtResult == 25 ? "Hallow Desert" :
-                                                   wtResult == 26 ? "Granite Cave" :
-                                                   wtResult == 27 ? "Marble Cave" :
-                                                   wtResult == 28 ? "Graveyard" :
-                                                   wtResult == 29 ? "Oasis" :
-                                                   wtResult == 30 ? "Jungle Temple" :
-                                                   wtResult == 31 ? "Meteorite" :
-                                                   wtResult == 32 ? "Spider Cave" :
-                                                   wtResult == 33 ? "Endless Sea" :
-                                                   wtResult == 34 ? "Forgotten Depths" :
-                                                   wtResult == 35 ? "Luna" :
-                                                   wtResult == 36 ? "Ruins of Luna" :
+                    string worldgenTileCategoryReply = wtResult == "1" ? "Surface" :
+                                                   wtResult == "2" ? "Underground" :
+                                                   wtResult == "3" ? "Purity" :
+                                                   wtResult == "4" ? "Snow" :
+                                                   wtResult == "5" ? "Desert" :
+                                                   wtResult == "6" ? "Corruption" :
+                                                   wtResult == "7" ? "Crimson" :
+                                                   wtResult == "8" ? "Jungle" :
+                                                   wtResult == "9" ? "Dungeon" :
+                                                   wtResult == "10" ? "Ocean" :
+                                                   wtResult == "11" ? "Mushroom" :
+                                                   wtResult == "12" ? "Cavern" :
+                                                   wtResult == "13" ? "Underground Desert" :
+                                                   wtResult == "14" ? "Underground Jungle" :
+                                                   wtResult == "15" ? "Underground Mushroom" :
+                                                   wtResult == "16" ? "Ice Biome" :
+                                                   wtResult == "17" ? "Glowing Moss Biome" :
+                                                   wtResult == "18" ? "Underworld" :
+                                                   wtResult == "19" ? "The Hallow" :
+                                                   wtResult == "20" ? "Underground Hallow" :
+                                                   wtResult == "21" ? "Underground Corruption" :
+                                                   wtResult == "22" ? "Underground Crimson" :
+                                                   wtResult == "23" ? "Corrupted Desert" :
+                                                   wtResult == "24" ? "Crimson Desert" :
+                                                   wtResult == "25" ? "Hallow Desert" :
+                                                   wtResult == "26" ? "Granite Cave" :
+                                                   wtResult == "27" ? "Marble Cave" :
+                                                   wtResult == "28" ? "Graveyard" :
+                                                   wtResult == "29" ? "Oasis" :
+                                                   wtResult == "30" ? "Jungle Temple" :
+                                                   wtResult == "31" ? "Meteorite" :
+                                                   wtResult == "32" ? "Spider Cave" :
+                                                   wtResult == "33" ? "Endless Sea" :
+                                                   wtResult == "34" ? "Forgotten Depths" :
+                                                   wtResult == "35" ? "Luna" :
+                                                   wtResult == "36" ? "Ruins of Luna" :
                                                    "Error: Undefined";
                     DiscordMessage worldgenTileNameQuestion = await context.Channel.SendMessageAsync("Please enter the name of this Tile:").ConfigureAwait(false);
                     InteractivityExtension worldgenTileNameInteractivity = context.Client.GetInteractivity();

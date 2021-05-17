@@ -1102,7 +1102,15 @@ namespace ProvidenceBot.Commands
                 await mechanicDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
                 string[] mechanicKeywords = new string[2] { mechanicReply, mainCategoryReply };
-                await BuildFoundSuggestion(context, context.Message.Author, mechanicNameMessage.Content, mechanicKeywords, DateTime.Now, mechanicDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                int mechanicNumber = await CheckNumber().ConfigureAwait(false);
+                DiscordEmbedBuilder mechanicEmbed = await BuildFoundSuggestion(context, context.Message.Author, mechanicNameMessage.Content, mechanicKeywords, DateTime.Now, mechanicDescriptionMessage.Content, mechanicNumber).ConfigureAwait(false);
+                
+                DiscordMessage message = await context.Channel.SendMessageAsync(mechanicEmbed.Build()).ConfigureAwait(false);
+                await message.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                await message.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                await message.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                Suggestion suggestion = new Suggestion { ID = message, Author = context.Message.Author, Title = mechanicNameMessage.Content, Keywords = mechanicKeywords, Date = DateTime.Now, Description = mechanicDescriptionMessage.Content, Number = mechanicNumber };
+                await suggestService.AddSuggestion(suggestion).ConfigureAwait(false);
                 // DiscordMessage finalMechanicResult = await context.Channel.SendMessageAsync($"{mechanicNameMessage.Content} | {mechanicReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{mechanicDescriptionMessage.Content}").ConfigureAwait(false);
                 // await finalMechanicResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
                 // await finalMechanicResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
@@ -1338,7 +1346,7 @@ namespace ProvidenceBot.Commands
       return await suggestService.FindSuggestionByTitle(title).ConfigureAwait(false);
     }
 
-    public async Task BuildFoundSuggestion(CommandContext context, DiscordUser author, string title, string[] keywords, DateTime date, string description, int number)
+    public async Task<DiscordEmbedBuilder> BuildFoundSuggestion(CommandContext context, DiscordUser author, string title, string[] keywords, DateTime date, string description, int number)
     {
       int keywordCount = keywords.Length - 1;
       string keywordField = "";
@@ -1357,12 +1365,13 @@ namespace ProvidenceBot.Commands
       response.AddField("Keywords:", keywordField);
       response.AddField("Description:", description);
       response.WithTimestamp(date);
-      DiscordMessage message = await context.Channel.SendMessageAsync(response.Build()).ConfigureAwait(false);
-      await message.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-      await message.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-      await message.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
-      Suggestion suggestion = new Suggestion { ID = message, Author = author, Title = title, Keywords = keywords, Date = date, Description = description, Number = number };
-      await suggestService.AddSuggestion(suggestion).ConfigureAwait(false);
+      //DiscordMessage message = await context.Channel.SendMessageAsync(response.Build()).ConfigureAwait(false);
+      //await message.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+      //await message.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+      //await message.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+      //Suggestion suggestion = new Suggestion { ID = message, Author = author, Title = title, Keywords = keywords, Date = date, Description = description, Number = number };
+      //await suggestService.AddSuggestion(suggestion).ConfigureAwait(false);
+      return response;
     }
 
     public async Task BuildFoundSuggestion(CommandContext context, Suggestion suggestion)

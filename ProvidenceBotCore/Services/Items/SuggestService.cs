@@ -124,18 +124,15 @@ namespace ProvidenceBotCore.Services.Items
       }
       return secondaryList;
     }
-    public async Task<int> FindSuggestionNumber()
+    public Task<int> FindSuggestionNumber()
     {
-      Suggestion suggestion = await suggestContext.Suggestions.LastOrDefaultAsync();
+      Suggestion suggestion = (Suggestion)suggestContext.Suggestions.OrderByDescending(x => x.Number).Take(1);
+      //Suggestion suggestion = await suggestContext.Suggestions.LastOrDefaultAsync();
       if (suggestion == null)
       {
-        return 0;
+        return Task.FromResult(0);
       }
-      else
-      {
-        int number = suggestion.Number;
-        return number;
-      }
+      return Task.FromResult(suggestion.Number);
     }
     //Suggestion item = await suggestService.Items.FirstOrDefaultAsync(x => x.Title.Equals(title, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
     //return await 

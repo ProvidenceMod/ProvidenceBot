@@ -7,21 +7,36 @@ using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.Interactivity;
 using DSharpPlus;
 using System.Drawing;
+using ProvidenceBotDAL;
+using ProvidenceBotDAL.Models.Item;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Collections.Generic;
+using ProvidenceBotCore.Services.Items;
 
 namespace ProvidenceBot.Commands
 {
   public class Suggest : BaseCommandModule
   {
+    private readonly ISuggestService suggestService;
+
+    public DiscordColor color = new DiscordColor("651f33"); // Embed Color
+    public DiscordEmoji starEmoji;
+    public DiscordEmoji checkEmoji;
+    public DiscordEmoji crossEmoji;
+    public Suggest(ISuggestService itemService)
+    {
+      suggestService = itemService;
+    }
+
     public DiscordMessage validOptionWarn;
     [Command("suggest")]
     [Description("Suggests something in the #suggestions channel. Step by step for readability.")]
     public async Task Suggestion(CommandContext context)
     {
-      DiscordColor color = new DiscordColor("651f33"); // Embed Color
-
-      DiscordEmoji starEmoji = DiscordEmoji.FromName(context.Client, ":star:");
-      DiscordEmoji checkEmoji = DiscordEmoji.FromGuildEmote(context.Client, 785370805093269514);
-      DiscordEmoji crossEmoji = DiscordEmoji.FromGuildEmote(context.Client, 801764305464852481);
+      starEmoji = DiscordEmoji.FromName(context.Client, ":star:");
+      checkEmoji = DiscordEmoji.FromGuildEmote(context.Client, 785370805093269514);
+      crossEmoji = DiscordEmoji.FromGuildEmote(context.Client, 801764305464852481);
 
       if (context.Channel.Name != "suggestions") // Make sure this is the right channel
       {
@@ -90,10 +105,10 @@ namespace ProvidenceBot.Commands
               await guiDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
               await guiDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-              DiscordMessage finalGUIResult = await context.Channel.SendMessageAsync($"{guiNameMessage.Content} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{guiDescriptionMessage.Content}").ConfigureAwait(false);
-              await finalGUIResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-              await finalGUIResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-              await finalGUIResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+              string[] guiKeywords = new string[1] { mainCategoryReply };
+              await BuildFoundSuggestion(context, context.Message.Author, guiNameMessage.Content, guiKeywords, DateTime.Now, guiDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+              // DiscordMessage finalGUIResult = await context.Channel.SendMessageAsync($"{guiNameMessage.Content} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{guiDescriptionMessage.Content}").ConfigureAwait(false);
+              // await finalGUIResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
               break;
             case "2": // If it's a Feature
               suggestionBuilder.ClearFields();
@@ -106,7 +121,6 @@ namespace ProvidenceBot.Commands
               suggestionBuilder.AddField("5. Hazard Addition", "Dangers encountered in general or in certain biomes");
               suggestionBuilder.AddField("6. Modifier", "Difficulty modifiers, recreational modifiers, challenge modifiers");
               await mainCategoryQuestion.ModifyAsync(msg => msg.Embed = suggestionBuilder.Build()).ConfigureAwait(false);
-
               InteractivityExtension featureCategoryInteractivity = context.Client.GetInteractivity();
               InteractivityResult<DiscordMessage> featureCategoryResponse = await featureCategoryInteractivity.WaitForMessageAsync(x => x.Channel.Name == "suggestions" && x.Channel.Name == context.Channel.Name && x.Author.Id == authorID).ConfigureAwait(false);
               DiscordMessage featureCategoryMessage = featureCategoryResponse.Result;
@@ -149,10 +163,12 @@ namespace ProvidenceBot.Commands
                 await featureDescriptionMessage.DeleteAsync().ConfigureAwait(false);
                 await featureDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
 
-                DiscordMessage finalFeatureResult = await context.Channel.SendMessageAsync($"{featureNameMessage.Content} | {featureCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{featureDescriptionMessage.Content}").ConfigureAwait(false);
-                await finalFeatureResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                await finalFeatureResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                await finalFeatureResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                string[] featureKeywords = new string[2] { featureCategoryReply, mainCategoryReply };
+                await BuildFoundSuggestion(context, context.Message.Author, featureNameMessage.Content, featureKeywords, DateTime.Now, featureDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                // DiscordMessage finalFeatureResult = await context.Channel.SendMessageAsync($"{featureNameMessage.Content} | {featureCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{featureDescriptionMessage.Content}").ConfigureAwait(false);
+                // await finalFeatureResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                // await finalFeatureResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                // await finalFeatureResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               }
               break;
             case "3": // If it's an Entity
@@ -353,11 +369,13 @@ namespace ProvidenceBot.Commands
                               await accessoryDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                               await accessoryDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                              DiscordMessage finalAccessoryResult = await context.Channel.SendMessageAsync($"{accessoryNameMessage.Content} | {accessoryClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{accessoryDescriptionMessage.Content}").ConfigureAwait(false);
+                              string[] accessoryKeywords = new string[5] { accessoryClassReply, itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                              await BuildFoundSuggestion(context, context.Message.Author, accessoryNameMessage.Content, accessoryKeywords, DateTime.Now, accessoryDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
 
-                              await finalAccessoryResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              await finalAccessoryResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              await finalAccessoryResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              //DiscordMessage finalAccessoryResult = await context.Channel.SendMessageAsync($"{accessoryNameMessage.Content} | {accessoryClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{accessoryDescriptionMessage.Content}").ConfigureAwait(false);
+                              //await finalAccessoryResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              //await finalAccessoryResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              //await finalAccessoryResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
 
@@ -381,10 +399,12 @@ namespace ProvidenceBot.Commands
                             await ammoDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                             await ammoDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                            DiscordMessage finalAmmoResult = await context.Channel.SendMessageAsync($"{ammoNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{ammoDescriptionMessage.Content}").ConfigureAwait(false);
-                            await finalAmmoResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                            await finalAmmoResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                            await finalAmmoResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                            string[] ammoKeywords = new string[4] { itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                            await BuildFoundSuggestion(context, context.Message.Author, ammoNameMessage.Content, ammoKeywords, DateTime.Now, ammoDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                            // DiscordMessage finalAmmoResult = await context.Channel.SendMessageAsync($"{ammoNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{ammoDescriptionMessage.Content}").ConfigureAwait(false);
+                            // await finalAmmoResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                            // await finalAmmoResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                            // await finalAmmoResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
                           case "3": // Armor
 
@@ -445,10 +465,12 @@ namespace ProvidenceBot.Commands
                               await armorDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                               await armorDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                              DiscordMessage finalArmorResult = await context.Channel.SendMessageAsync($"{armorNameMessage.Content} | {armorClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{armorDescriptionMessage.Content}").ConfigureAwait(false);
-                              await finalArmorResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              await finalArmorResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              await finalArmorResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              string[] armorKeywords = new string[5] { armorClassReply, itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                              await BuildFoundSuggestion(context, context.Message.Author, armorNameMessage.Content, armorKeywords, DateTime.Now, armorDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                              // DiscordMessage finalArmorResult = await context.Channel.SendMessageAsync($"{armorNameMessage.Content} | {armorClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{armorDescriptionMessage.Content}").ConfigureAwait(false);
+                              // await finalArmorResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              // await finalArmorResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              // await finalArmorResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case "4": // Consumable
@@ -507,10 +529,12 @@ namespace ProvidenceBot.Commands
                               await consumableDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                               await consumableDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                              DiscordMessage finalConsumableResult = await context.Channel.SendMessageAsync($"{consumableNameMessage.Content} | {consumableReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{consumableDescriptionMessage.Content}").ConfigureAwait(false);
-                              await finalConsumableResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              await finalConsumableResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              await finalConsumableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              string[] consumableKeywords = new string[5] { consumableReply, itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                              await BuildFoundSuggestion(context, context.Message.Author, consumableNameMessage.Content, consumableKeywords, DateTime.Now, consumableDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                              // DiscordMessage finalConsumableResult = await context.Channel.SendMessageAsync($"{consumableNameMessage.Content} | {consumableReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{consumableDescriptionMessage.Content}").ConfigureAwait(false);
+                              // await finalConsumableResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              // await finalConsumableResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              // await finalConsumableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case "5": // Material
@@ -533,10 +557,12 @@ namespace ProvidenceBot.Commands
                             await materialDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                             await materialDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                            DiscordMessage finalMaterialResult = await context.Channel.SendMessageAsync($"{materialNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{materialDescriptionMessage.Content}").ConfigureAwait(false);
-                            await finalMaterialResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                            await finalMaterialResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                            await finalMaterialResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                            string[] materialKeywords = new string[4] { itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                            await BuildFoundSuggestion(context, context.Message.Author, materialNameMessage.Content, materialKeywords, DateTime.Now, materialDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                            // DiscordMessage finalMaterialResult = await context.Channel.SendMessageAsync($"{materialNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{materialDescriptionMessage.Content}").ConfigureAwait(false);
+                            // await finalMaterialResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                            // await finalMaterialResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                            // await finalMaterialResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
                           case "6": // Placeable
 
@@ -590,10 +616,12 @@ namespace ProvidenceBot.Commands
                               await placeableDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                               await placeableDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                              DiscordMessage finalPlaceableResult = await context.Channel.SendMessageAsync($"{placeableNameMessage.Content} | {placeableReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{placeableDescriptionMessage.Content}").ConfigureAwait(false);
-                              await finalPlaceableResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              await finalPlaceableResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              await finalPlaceableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              string[] placeableKeywords = new string[5] { placeableReply, itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                              await BuildFoundSuggestion(context, context.Message.Author, placeableNameMessage.Content, placeableKeywords, DateTime.Now, placeableDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                              // DiscordMessage finalPlaceableResult = await context.Channel.SendMessageAsync($"{placeableNameMessage.Content} | {placeableReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{placeableDescriptionMessage.Content}").ConfigureAwait(false);
+                              // await finalPlaceableResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              // await finalPlaceableResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              // await finalPlaceableResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case "7": // Potions
@@ -616,10 +644,12 @@ namespace ProvidenceBot.Commands
                             await potionDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                             await potionDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                            DiscordMessage finalPotionResult = await context.Channel.SendMessageAsync($"{potionNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{potionDescriptionMessage.Content}").ConfigureAwait(false);
-                            await finalPotionResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                            await finalPotionResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                            await finalPotionResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                            string[] potionKeywords = new string[4] { itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                            await BuildFoundSuggestion(context, context.Message.Author, potionNameMessage.Content, potionKeywords, DateTime.Now, potionDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                            // DiscordMessage finalPotionResult = await context.Channel.SendMessageAsync($"{potionNameMessage.Content} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{potionDescriptionMessage.Content}").ConfigureAwait(false);
+                            // await finalPotionResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                            // await finalPotionResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                            // await finalPotionResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             break;
                           case "8": // Tools 
 
@@ -675,10 +705,12 @@ namespace ProvidenceBot.Commands
                               await toolDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                               await toolDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                              DiscordMessage finalToolResult = await context.Channel.SendMessageAsync($"{toolNameMessage.Content} | {toolReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{toolDescriptionMessage.Content}").ConfigureAwait(false);
-                              await finalToolResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              await finalToolResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              await finalToolResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              string[] toolKeywords = new string[5] { toolReply, itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                              await BuildFoundSuggestion(context, context.Message.Author, toolNameMessage.Content, toolKeywords, DateTime.Now, toolDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                              // DiscordMessage finalToolResult = await context.Channel.SendMessageAsync($"{toolNameMessage.Content} | {toolReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{toolDescriptionMessage.Content}").ConfigureAwait(false);
+                              // await finalToolResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              // await finalToolResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              // await finalToolResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                           case "9": // Weapon
@@ -738,10 +770,12 @@ namespace ProvidenceBot.Commands
                               await weaponDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                               await weaponDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                              DiscordMessage finalWeaponResult = await context.Channel.SendMessageAsync($"{weaponNameMessage.Content} | {weaponClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{weaponDescriptionMessage.Content}").ConfigureAwait(false);
-                              await finalWeaponResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                              await finalWeaponResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                              await finalWeaponResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                              string[] weaponKeywords = new string[5] { weaponClassReply, itemCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                              await BuildFoundSuggestion(context, context.Message.Author, weaponNameMessage.Content, weaponKeywords, DateTime.Now, weaponDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                              // DiscordMessage finalWeaponResult = await context.Channel.SendMessageAsync($"{weaponNameMessage.Content} | {weaponClassReply} | {itemCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{weaponDescriptionMessage.Content}").ConfigureAwait(false);
+                              // await finalWeaponResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                              // await finalWeaponResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                              // await finalWeaponResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                             }
                             break;
                         }
@@ -998,10 +1032,12 @@ namespace ProvidenceBot.Commands
                           await npcDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                           await npcDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                          DiscordMessage finalNPCResult = await context.Channel.SendMessageAsync($"{npcNameMessage.Content} | {npcTypeReply} | {npcCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{npcDescriptionMessage.Content}").ConfigureAwait(false);
-                          await finalNPCResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                          await finalNPCResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                          await finalNPCResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                          string[] npcKeywords = new string[5] { npcTypeReply, npcCategoryReply, entityGamestageReply, entityCategoryReply, mainCategoryReply };
+                          await BuildFoundSuggestion(context, context.Message.Author, npcNameMessage.Content, npcKeywords, DateTime.Now, npcDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                          // DiscordMessage finalNPCResult = await context.Channel.SendMessageAsync($"{npcNameMessage.Content} | {npcTypeReply} | {npcCategoryReply} | {entityGamestageReply} | {entityCategoryReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{npcDescriptionMessage.Content}").ConfigureAwait(false);
+                          // await finalNPCResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                          // await finalNPCResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                          // await finalNPCResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                         }
                       }
                       break;
@@ -1065,10 +1101,12 @@ namespace ProvidenceBot.Commands
                 await mechanicDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                 await mechanicDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                DiscordMessage finalMechanicResult = await context.Channel.SendMessageAsync($"{mechanicNameMessage.Content} | {mechanicReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{mechanicDescriptionMessage.Content}").ConfigureAwait(false);
-                await finalMechanicResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                await finalMechanicResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                await finalMechanicResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                string[] mechanicKeywords = new string[2] { mechanicReply, mainCategoryReply };
+                await BuildFoundSuggestion(context, context.Message.Author, mechanicNameMessage.Content, mechanicKeywords, DateTime.Now, mechanicDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                // DiscordMessage finalMechanicResult = await context.Channel.SendMessageAsync($"{mechanicNameMessage.Content} | {mechanicReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{mechanicDescriptionMessage.Content}").ConfigureAwait(false);
+                // await finalMechanicResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                // await finalMechanicResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                // await finalMechanicResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
               }
               break;
             case "5": // Worldgen
@@ -1232,10 +1270,12 @@ namespace ProvidenceBot.Commands
                     await worldgenTileDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                     await worldgenTileDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                    DiscordMessage finalWorldgenTileResult = await context.Channel.SendMessageAsync($"{worldgenTileNameMessage.Content} | {worldgenTileCategoryReply} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{worldgenTileDescriptionMessage.Content}").ConfigureAwait(false);
-                    await finalWorldgenTileResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                    await finalWorldgenTileResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                    await finalWorldgenTileResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                    string[] worldgenTileKeywords = new string[3] { worldgenTileCategoryReply, worldgenReply, mainCategoryReply };
+                    await BuildFoundSuggestion(context, context.Message.Author, worldgenTileNameMessage.Content, worldgenTileKeywords, DateTime.Now, worldgenTileDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                    // DiscordMessage finalWorldgenTileResult = await context.Channel.SendMessageAsync($"{worldgenTileNameMessage.Content} | {worldgenTileCategoryReply} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{worldgenTileDescriptionMessage.Content}").ConfigureAwait(false);
+                    // await finalWorldgenTileResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                    // await finalWorldgenTileResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                    // await finalWorldgenTileResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                   }
                 }
                 else
@@ -1256,10 +1296,12 @@ namespace ProvidenceBot.Commands
                   await worldgenDescriptionQuestion.DeleteAsync().ConfigureAwait(false);
                   await worldgenDescriptionMessage.DeleteAsync().ConfigureAwait(false);
 
-                  DiscordMessage finalWorldgenResult = await context.Channel.SendMessageAsync($"{worldgenNameMessage.Content} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{0}\n{worldgenDescriptionMessage.Content}").ConfigureAwait(false);
-                  await finalWorldgenResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
-                  await finalWorldgenResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
-                  await finalWorldgenResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+                  string[] worldgenKeywords = new string[2] { worldgenReply, mainCategoryReply };
+                  await BuildFoundSuggestion(context, context.Message.Author, worldgenNameMessage.Content, worldgenKeywords, DateTime.Now, worldgenDescriptionMessage.Content, await CheckNumber().ConfigureAwait(false) + 1).ConfigureAwait(false);
+                  // DiscordMessage finalWorldgenResult = await context.Channel.SendMessageAsync($"{worldgenNameMessage.Content} | {worldgenReply} | {mainCategoryReply} | {context.User.Mention} | {DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} | #{number}\n{worldgenDescriptionMessage.Content}").ConfigureAwait(false);
+                  // await finalWorldgenResult.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+                  // await finalWorldgenResult.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+                  // await finalWorldgenResult.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
                 }
               }
               break;
@@ -1267,9 +1309,99 @@ namespace ProvidenceBot.Commands
         }
       }
     }
+    [Command("!findSuggestionByNumber")]
+    [Description("Finds the suggestion with the given number identifier.")]
+    [RequirePermissions(Permissions.Administrator)]
+    public async Task FindSuggestByNumber(CommandContext context, int number)
+    {
+      Suggestion suggestion = await suggestService.FindSuggestionByNumber(context, number).ConfigureAwait(false);
+      if (suggestion == null)
+      {
+        await context.Channel.SendMessageAsync($"No suggestion with that number was found.");
+      }
+      else
+      {
+        await BuildFoundSuggestion(context, suggestion).ConfigureAwait(false);
+      }
+    }
     public async Task Timeout(CommandContext context)
     {
       validOptionWarn = await context.Channel.SendMessageAsync("Please enter a valid option.").ConfigureAwait(false);
+    }
+
+    public async Task AddSuggest(CommandContext context, DiscordUser author, string title, string[] keywords, DateTime date, string description, int number)
+    {
+      await BuildFoundSuggestion(context, author, title, keywords, date, description, number).ConfigureAwait(false);
+    }
+    public async Task<List<Suggestion>> FindSuggestByTitle(string title)
+    {
+      return await suggestService.FindSuggestionByTitle(title).ConfigureAwait(false);
+    }
+
+    public async Task BuildFoundSuggestion(CommandContext context, DiscordUser author, string title, string[] keywords, DateTime date, string description, int number)
+    {
+      int keywordCount = keywords.Length - 1;
+      string keywordField = "";
+      for (int i = 0; i <= keywordCount; i++)
+      {
+        if (i == 0)
+          keywordField += $"{keywords[i]}";
+        else
+          keywordField += $" | {keywords[i]}";
+      }
+      DiscordEmbedBuilder response = new DiscordEmbedBuilder();
+      response.WithAuthor($"{author.Username}{author.Discriminator}\n{author.Id}");
+      response.WithColor(color);
+      response.WithTitle(title);
+      response.AddField("Number:", number.ToString());
+      response.AddField("Keywords:", keywordField);
+      response.AddField("Description:", description);
+      response.WithTimestamp(date);
+      DiscordMessage message = await context.Channel.SendMessageAsync(response.Build()).ConfigureAwait(false);
+      await message.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+      await message.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+      await message.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+      Suggestion suggestion = new Suggestion { ID = message, Author = author, Title = title, Keywords = keywords, Date = date, Description = description, Number = number };
+      await suggestService.AddSuggestion(suggestion).ConfigureAwait(false);
+    }
+
+    public async Task BuildFoundSuggestion(CommandContext context, Suggestion suggestion)
+    {
+      int keywordCount = suggestion.Keywords.Length - 1;
+      string keywordField = "";
+      for (int i = 0; i <= keywordCount; i++)
+      {
+        if (i == 0)
+          keywordField += $"{suggestion.Keywords[i]}";
+        else
+          keywordField += $" | {suggestion.Keywords[i]}";
+      }
+      DiscordEmbedBuilder response = new DiscordEmbedBuilder();
+      response.WithAuthor($"{suggestion.Author.Username}{suggestion.Author.Discriminator}\n{suggestion.Author.Id}");
+      response.WithColor(color);
+      response.WithTitle(suggestion.Title);
+      response.AddField("Number:", suggestion.Number.ToString());
+      response.AddField("Keywords:", keywordField);
+      response.AddField("Description:", suggestion.Description);
+      response.WithTimestamp(suggestion.Date);
+      DiscordMessage message = await context.Channel.SendMessageAsync(response.Build()).ConfigureAwait(false);
+      await message.CreateReactionAsync(starEmoji).ConfigureAwait(false);
+      await message.CreateReactionAsync(checkEmoji).ConfigureAwait(false);
+      await message.CreateReactionAsync(crossEmoji).ConfigureAwait(false);
+    }
+
+    public async Task<int> CheckNumber()
+    {
+      // If we ever need to get Items as a list, here is how
+      //List<Suggestion> list = await suggestContext.Items.ToListAsync();
+      //foreach (Suggestion suggestion in list)
+      //{
+      //  if (suggestion.Number > highestNumber)
+      //  {
+      //    highestNumber = suggestion.Number;
+      //  }
+      //}
+      return await suggestService.FindSuggestionNumber().ConfigureAwait(false);
     }
   }
 }

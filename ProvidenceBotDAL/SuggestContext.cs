@@ -1,12 +1,12 @@
-using ProvidenceDAL.Database.Models.items;
+using ProvidenceBotDAL.Models.Item;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProvidenceDAL.Database
+namespace ProvidenceBotDAL
 {
   public class SuggestContext : DbContext
   {
     public SuggestContext(DbContextOptions<SuggestContext> options) : base(options) { }
-    public DbSet<Item> Items { get; set; }
+    public DbSet<Suggestion> Suggestions { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{

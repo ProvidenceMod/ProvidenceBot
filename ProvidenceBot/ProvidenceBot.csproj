@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProvidenceBotDALMigrations\ProvidenceBotDALMigrations.csproj" />
+    <ProjectReference Include="..\ProvidenceBotCore\ProvidenceBotCore.csproj" />
+    <ProjectReference Include="..\ProvidenceBotDAL.Migrations\ProvidenceBotDAL.Migrations.csproj" />
     <ProjectReference Include="..\ProvidenceBotDAL\ProvidenceBotDAL.csproj" />
   </ItemGroup>
 

@@ -64,10 +64,6 @@ namespace ProvidenceBot
       Client.ConnectAsync();
     }
 
-    public async Task RunAsync()
-    {
-    }
-
     private Task OnClientReady(object sender, ReadyEventArgs e)
     {
       return Task.CompletedTask;

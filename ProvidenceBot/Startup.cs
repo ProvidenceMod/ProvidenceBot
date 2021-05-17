@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ProvidenceDAL.Database;
+using ProvidenceBotCore.Services.Items;
+using ProvidenceBotDAL;
 
 namespace ProvidenceBot
 {
@@ -16,9 +17,11 @@ namespace ProvidenceBot
     {
       services.AddDbContext<SuggestContext>(options => 
       {
-        options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SuggestContext;Trusted_Connection=True;MultipleActiveResults=true",
+        options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SuggestContext;Trusted_Connection=True;MultipleActiveResultSets=true",
           x => x.MigrationsAssembly("ProvidenceBotDAL.Migrations"));
+        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
       });
+      services.AddScoped<ISuggestService, SuggestService>();
       ServiceProvider serviceProvider = services.BuildServiceProvider();
       Bot bot = new Bot(serviceProvider);
       services.AddSingleton(bot);

@@ -9,10 +9,10 @@ namespace ProvidenceBotDAL
   public abstract class Entity
   {
     [Key]
-    public DiscordMessage ID { get; set; }
+    public ulong ID { get; set; }
     public string Title { get; set; }
-    public string[] Keywords { get; set; }
-    public DiscordUser Author { get; set; }
+    public string Keywords { get; set; }
+    public ulong Author { get; set; }
     public DateTime Date { get; set; }
     public string Description { get; set; }
     public int Number { get; set; }

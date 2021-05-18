@@ -19,7 +19,7 @@ namespace ProvidenceBot
       {
         options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SuggestContext;Trusted_Connection=True;MultipleActiveResultSets=true",
           x => x.MigrationsAssembly("ProvidenceBotDAL.Migrations"));
-        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        options.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
       });
       services.AddScoped<ISuggestService, SuggestService>();
       ServiceProvider serviceProvider = services.BuildServiceProvider();

@@ -6,7 +6,7 @@ namespace ProvidenceBotDAL
   public class SuggestContext : DbContext
   {
     public SuggestContext(DbContextOptions<SuggestContext> options) : base(options) { }
-    public DbSet<Suggestion> Suggestions { get; set; }
+    public DbSet<Suggestion> Suggestion { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{

@@ -16,8 +16,8 @@ namespace ProvidenceBotCore.Services.Items
     Task AddSuggestion(Suggestion suggestion);
     Task RemoveSuggestion(Suggestion suggestion);
     Task ListSuggestion();
-    Task<SortedList<Suggestion, int>> FindSuggestionByRelativity(DiscordUser author = null, string title = null, string keywords = null, int number = 0);
-    Task<List<Suggestion>> FindSuggestionByAuthor(DiscordUser author);
+    Task<SortedList<Suggestion, int>> FindSuggestionByRelativity(DiscordMember author = null, string title = null, string keywords = null, int number = 0);
+    Task<List<Suggestion>> FindSuggestionByAuthor(DiscordMember author);
     Task<Suggestion> FindSuggestionByNumber(CommandContext context, int number);
     Task<List<Suggestion>> FindSuggestionByTitle(string title);
     Task<List<Suggestion>> FindSuggestionByKeyword(string keyword);
@@ -56,7 +56,7 @@ namespace ProvidenceBotCore.Services.Items
         Console.WriteLine($"{suggestion.Number}");
       }
     }
-    public async Task<SortedList<Suggestion, int>> FindSuggestionByRelativity(DiscordUser author = null, string title = null, string keywords = null, int number = 0)
+    public async Task<SortedList<Suggestion, int>> FindSuggestionByRelativity(DiscordMember author = null, string title = null, string keywords = null, int number = 0)
     {
       title = title.ToLower();
       List<Suggestion> mainList = await suggestContext.Suggestion.ToListAsync();
@@ -94,7 +94,7 @@ namespace ProvidenceBotCore.Services.Items
       }
       return secondaryList;
     }
-    public async Task<List<Suggestion>> FindSuggestionByAuthor(DiscordUser author)
+    public async Task<List<Suggestion>> FindSuggestionByAuthor(DiscordMember author)
     {
       List<Suggestion> mainList = await suggestContext.Suggestion.ToListAsync();
       List<Suggestion> secondaryList = new List<Suggestion>();

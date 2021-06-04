@@ -1,4 +1,4 @@
 {
-  "token": "Nzg5MjE5ODgxNDI1OTYxMDEx.X9u4Sg.4pPMAbzxl8d7UGEO8SNJ_lNDRag",
+  "token": "${{ secret.TOKEN }}",
   "prefix":  "!"
 }

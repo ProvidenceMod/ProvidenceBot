@@ -339,6 +339,7 @@ ASALocalRun/
 *.ico
 *.psd
 desktop.ini
+config.json
 bin/
 .vscode/
 Developer/

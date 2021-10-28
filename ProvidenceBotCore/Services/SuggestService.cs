@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
 using ProvidenceBotDAL;
-using ProvidenceBotDAL.Models.Item;
 using DSharpPlus.CommandsNext;
 
-namespace ProvidenceBotCore.Services.Items
+namespace ProvidenceBotCore.Services
 {
   public interface ISuggestService
   {

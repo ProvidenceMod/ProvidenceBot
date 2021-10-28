@@ -1,14 +1,12 @@
 using DSharpPlus.Entities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ProvidenceBotDAL
 {
-  public abstract class Entity
+  public class Suggestion
   {
-    [Key]
     public ulong ID { get; set; }
     public string Title { get; set; }
     public string Keywords { get; set; }

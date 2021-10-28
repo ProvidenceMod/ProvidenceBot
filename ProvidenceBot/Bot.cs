@@ -16,9 +16,9 @@ namespace ProvidenceBot
 {
   public class Bot
   {
-    public DiscordClient Client { get; private set; }
-    public InteractivityExtension Interactivity { get; private set; }
-    public CommandsNextExtension Commands { get; private set; }
+    public DiscordClient Client { get; }
+    public InteractivityExtension Interactivity { get; }
+    public CommandsNextExtension Commands { get; }
     public static bool debugMode;
 
     public Bot(IServiceProvider services)

@@ -8,11 +8,11 @@ using DSharpPlus.Interactivity;
 using DSharpPlus;
 using System.Drawing;
 using ProvidenceBotDAL;
-using ProvidenceBotDAL.Models.Item;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
-using ProvidenceBotCore.Services.Items;
+using ProvidenceBotCore.Services;
+using ProvidenceBotCore.Services;
 
 namespace ProvidenceBot.Commands
 {

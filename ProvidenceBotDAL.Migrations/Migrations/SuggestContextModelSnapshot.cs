@@ -19,7 +19,7 @@ namespace ProvidenceBotDAL.Migrations.Migrations
           .HasAnnotation("ProductVersion", "5.0.6")
           .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-      modelBuilder.Entity("ProvidenceBotDAL.Models.Item.Suggestion", b =>
+      modelBuilder.Entity("ProvidenceBotDAL.Suggestion", b =>
           {
             b.Property<decimal>("ID")
                       .ValueGeneratedOnAdd()

@@ -1,4 +1,3 @@
-using ProvidenceBotDAL.Models.Item;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProvidenceBotDAL
